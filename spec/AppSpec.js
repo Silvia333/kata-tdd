@@ -74,11 +74,11 @@ describe('calculo de marcador', function(){
         expect(recalcularMarcador(3, '', 21)).toBe(0);
     });
 
-    it("Si en mas de 10 segundos fallas", function(){
+    it("Si fallas en mas de 10 segundos pierdes puntos", function(){
         expect(recalcularMarcador(3, false, 21)).toBe(1);
     });
 
-    it("Si en menos de 10 segundos fallas", function(){
+    it("Si fallas en menos de 10 segundos pierdes puntos", function(){
         expect(recalcularMarcador(3, false, 9)).toBe(2);
     });
 });
