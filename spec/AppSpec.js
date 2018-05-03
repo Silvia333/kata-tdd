@@ -39,8 +39,19 @@ describe('calculo de marcador', function(){
         if (esCorrecta && tiempo > 10){
             return puntos;
         }
-        if (!(esCorrecta === "")){
-            return 'Tienes que responder';
+        //No es coherente esta comprobación con la siguiente.
+        // if ( tiempo === ""){
+        //     return 'Tienes que responder';
+        // }
+
+        if (esCorrecta === '' && tiempo > 20){
+            return puntos - 3;
+        }
+        if (!esCorrecta && tiempo > 10){
+            return puntos - 2;
+        }
+        if (!esCorrecta && tiempo < 10){
+            return puntos - 1;
         }
     }
     it("suma mas puntos si acierta muy rapido en menos de 2 segundos", function(){
@@ -54,7 +65,20 @@ describe('calculo de marcador', function(){
     it("suma 0 puntos si acierta en más de 10 segundos", function(){
         expect(recalcularMarcador(10, true, 15)).toBe(10);
     });
-    it("Si no se responde no se puede seguir", function(){
-        expect(recalcularMarcador(10, '', 15)).toBe(undefined);
+
+    // it("Si no se responde no se puede seguir", function(){
+    //     expect(recalcularMarcador(10, '', '')).toBe('Tienes que responder');
+    // });
+
+    it("Si en 20 segundos no has respondido, pasa a siguiente pregunta", function(){
+        expect(recalcularMarcador(3, '', 21)).toBe(0);
+    });
+
+    it("Si en mas de 10 segundos fallas", function(){
+        expect(recalcularMarcador(3, false, 21)).toBe(1);
+    });
+
+    it("Si en menos de 10 segundos fallas", function(){
+        expect(recalcularMarcador(3, false, 9)).toBe(2);
     });
 });
