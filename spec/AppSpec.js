@@ -55,6 +55,6 @@ describe('calculo de marcador', function(){
         expect(recalcularMarcador(10, true, 15)).toBe(10);
     });
     it("Si no se responde no se puede seguir", function(){
-        expect(recalcularMarcador(10, '', 15)).toBe('');
+        expect(recalcularMarcador(10, '', 15)).toBe(undefined);
     });
 });
