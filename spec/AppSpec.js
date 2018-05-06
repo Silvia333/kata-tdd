@@ -28,39 +28,46 @@
 *
 * */
 describe('comprobador de respuestas', function() {
-    function comprobarRespuesta(pregunta, respuesta){
-        return pregunta.correcta===parseInt(respuesta);
+    function checkAnswer(question, answer){
+        return question.correct===parseInt(answer);
     }
-    var preguntaPrueba = {
-        pregunta : '¿Capital de Honduras?',
-        respuestas : [
+    var questionTest = {
+        question : '¿Capital de Honduras?',
+        answers : [
             'Tegucigalpa',
             'Tokio',
             'Madrid'
         ],
-        correcta: 0
+        correct: 0
     };
    
   it('comprobar si ha acertado', function(){
-    expect(comprobarRespuesta(preguntaPrueba, 0)).toBeTruthy();
+    expect(checkAnswer(questionTest, 0)).toBeTruthy();
   }); 
 });
 
 describe('comprobador de respuestas', function() {
-        function comprobarObjeto(pregunta){
-            return typeof pregunta.correcta === 'number';
+    /* comprobamos que la respuesta correcta sea de tipo number;
+        que respuestas sea de tipo array y que no este vacío, 
+        que pregunta sea string */
+
+        function checkObject(question){
+            return typeof question.correct === 'number' 
+                && question.answers instanceof Array 
+                && typeof question.question === 'string' 
+                && question.answers.length > 0;       
         }
-        var preguntaPrueba2 = {
-            pregunta : '¿Capital de Honduras?',
-            respuestas : [
+        var questionTestTwo = {
+            question : '¿Capital de Honduras?',
+            answers : [
                 'Tegucigalpa',
-                'Tokio',
-                'Madrid'
+                'Madrid',
+                'Lima'
             ],
-            correcta: null
+            correct: 0
         };
   it('comprobar el formato del objeto pregunta', function(){
-    expect(comprobarObjeto(preguntaPrueba2)).toBeFalsy();
+    expect(checkObject(questionTestTwo)).toBeTruthy();
   }); 
 });
 
