@@ -55,7 +55,7 @@ describe('comprobador de respuestas', function() {
             return typeof question.correct === 'number' 
                 && question.answers instanceof Array 
                 && typeof question.question === 'string' 
-                && question.answers.length > 0;       
+                && question.answers.length === 3;       
         }
         var questionTestTwo = {
             question : '¿Capital de Honduras?',
