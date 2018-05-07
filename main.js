@@ -42,23 +42,61 @@ var questions = [
 function getQuestionRamdon(){
     var aleatorio = Math.floor(Math.random()* questions.length);
     //borrar la pregunta
-    // questions.splice(aleatorio, 1);
+    //questions.splice(aleatorio, 1);
     //console.log(aleatorio);
     return questions[aleatorio];
 }
 
 function obtenerDatosPreguntaAleatoria(){
     var preguntaObtenida =  getQuestionRamdon();
+    var respuestasDePreguntaObtenida = preguntaObtenida.answer;
+    
+    document.getElementById('preguntas').innerHTML = preguntaObtenida.question;
+    
+    // var estructuraRespuestas = respuestasDePreguntaObtenida.map( function(item){
+    // });
 
-    console.log(preguntaObtenida.question);
-    console.log(preguntaObtenida.answer);
-
-    //document.getElementById('preguntas').innerHTML = getQuestionRamdon().question;
+    for (var i = 0; i < respuestasDePreguntaObtenida.length; i++){
+        var estructuraRespuesta = '<li><input name = "answers" type="radio" value = "'+ i +'">' + respuestasDePreguntaObtenida[i] + ' </li>';
+        document.getElementById('listaRespuestas').innerHTML += estructuraRespuesta;
+    }
+    
+    //document.getElementById('respuestas').innerHTML = getQuestionRamdon().;
 }
 
 obtenerDatosPreguntaAleatoria();
 
 //SetInterval 20 segundos
 
+
 setInterval(obtenerDatosPreguntaAleatoria, 20000);
 
+// function recalcularNoContesta(puntos, tiempo){
+//     if (tiempo === ''){
+//         return puntos - 2;
+//     }
+//     if (tiempo > 20){
+//         return puntos - 3;
+//     }
+// }
+
+// function recalcularMarcadorAcierto(puntos, tiempo){
+//     if (tiempo <= 2){
+//         return puntos + 2;
+//     }
+//     if (tiempo >= 2 && tiempo < 10){
+//         return ++puntos;
+//     }
+//     if (tiempo > 10){
+//         return puntos;
+//     }
+// }
+
+// function recalcularMarcadorFallo(puntos, tiempo){
+//     if (tiempo > 10){
+//         return puntos - 2;
+//     }
+//     if (tiempo <= 10){
+//         return puntos - 1;
+//     }
+// }

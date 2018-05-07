@@ -27,6 +27,70 @@
 *           (0, fallo, 9 segundos) -> -1 puntos
 *
 * */
+
+//excepcion de errores
+function describe(theSubject, funct){
+    try{
+        funct();
+        console.log('Ejecuta' + theSubject);
+    }
+    catch(error){
+        console.log('Ejecuta' + theSubject + error)
+    }
+}
+
+function it (theSubject, funct){
+    try{
+        funct();
+        console.log('Ejecuta' + theSubject);
+    }
+    catch(error){
+       throw theSubject + ':' + error;
+    }
+}
+
+function expect (actual){
+    return{
+        toEqual : function (expected){
+            if(actual != expected){
+                throw actual + ' is not ' + expected;
+            }
+        },
+        toBeTruthy : function (expected){
+            if(actual != true){
+                throw actual + ' is not ' + expected;
+            }
+        },
+        compare: function (actual, expected) {
+            return {
+                pass: (actual % 3) === 0
+            };
+        }
+    }
+}
+
+describe('comprobador de respuestas', function() {
+    function checkAnswer(question, answer){
+        return question.correct===parseInt(answer);
+    }
+    var questionTest = {
+        question : '¿Capital de Honduras?',
+        answers : [
+            'Tegucigalpa',
+            'Tokio',
+            'Madrid'
+        ],
+        correct: a
+    };
+   
+  it('comprobar si ha acertado', function(){
+    expect(checkAnswer(questionTest, 0)).toBeTruthy();
+  });
+  it('comprobar si number es divisible entre 3', function(){
+    expect(3).compare(3);
+  });  
+});
+
 describe('comprobador de respuestas', function() {
     function checkAnswer(question, answer){
         return question.correct===parseInt(answer);
