@@ -43,8 +43,12 @@ function getQuestionRamdon(){
     var aleatorio = Math.floor(Math.random()* questions.length);
     //borrar la pregunta
     // questions.splice(aleatorio, 1);
-    //console.log(aleatorio);
+    // console.log(aleatorio);
     return questions[aleatorio];
+}
+
+function deleteQuestionUsed(questionUsed) {
+    
 }
 
 function obtenerDatosPreguntaAleatoria(){
@@ -60,5 +64,5 @@ obtenerDatosPreguntaAleatoria();
 
 //SetInterval 20 segundos
 
-setInterval(obtenerDatosPreguntaAleatoria, 20000);
-
+setInterval(obtenerDatosPreguntaAleatoria, 5000);
+obtenerDatosPreguntaAleatoria();
