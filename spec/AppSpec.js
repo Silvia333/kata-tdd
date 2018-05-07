@@ -27,7 +27,6 @@
 *           (0, fallo, 9 segundos) -> -1 puntos
 *
 * */
-
 /*
 *      Condiciones para generar preguntas:
 
