@@ -1,74 +1,63 @@
+function getQuestions(callback) {
+    var serverData = [
+        {
+            question: { id: 1, text: 'Pregunta1' },
+            answers: [{ id: 1, text: 'A1' }, { id: 2, text: 'A2' }, { id: 3, text: 'A3' }],
+            correctAnswerId: 1
+        },
+        {
+            question: { id: 2, text: 'Pregunta2' },
+            answers: [{ id: 4, text: 'B1' }, { id: 5, text: 'B2' }, { id: 6, text: 'B3' }],
+            correctAnswerId: 5
+        },
+        {
+            question: { id: 3, text: 'Pregunta3' },
+            answers: [{ id: 7, text: 'C1' }, { id: 8, text: 'C2' }, { id: 9, text: 'C3' }],
+            correctAnswerId: 9
+        },
+    ]
+    callback(serverData);
+};
 
-//preguntas
-var questions = [
-    {
-        question : '¿Capital de Honduras?',
-        answer : [
-            'Tegucigalpa',
-            'Tokio',
-            'Madrid'
-        ],
-        indexOfCorrectAnswer: 0,
-    },
-    {
-        question : '¿Color de la bandera de Argentina?',
-        answer : [
-            'blanco, rojo, negro',
-            'azul, blanco, azul',
-            'rojo'
-        ],
-        indexOfCorrectAnswer: 1,
-    },
-    {
-        question : '¿Cual es el rio que pasa por Toledo?',
-        answer : [
-            'Miño',
-            'Duero',
-            'Tajo'
-        ],
-        indexOfCorrectAnswer: 2,
-    },
-    {
-        question : '¿Aprenderé js?',
-        answer : [
-            'No',
-            'No convencidisima',
-            'Tal vez'
-        ],
-        indexOfCorrectAnswer: 2,
-    }
-];
+var questions = [];
+getQuestions(function (data) {
+    questions = data;
+    /*...*/
+});
 
 function getQuestionRamdon(){
     var posicionDeAleatorio = Math.floor(Math.random()* questions.length);
     //borrar la pregunta
     // questions.splice(posicionDeAleatorio, 1);
     // console.log(posicionDeAleatorio);
+        
     return questions[posicionDeAleatorio];
-}
-
-function deleteQuestionUsed(questionUsed) {
-    
 }
 
 function obtenerDatosPreguntaAleatoria(){
     var preguntaObtenida =  getQuestionRamdon();
-    var respuestasDePreguntaObtenida = preguntaObtenida.answer;
+    var tituloDePreguntaObtenida = preguntaObtenida.question.text;
+    var respuestasDePreguntaObtenida = preguntaObtenida.answers;
     
-    document.getElementById('preguntas').innerHTML = preguntaObtenida.question;
-    
-    // var estructuraRespuestas = respuestasDePreguntaObtenida.map( function(item){
-    // });
+    pintarPreguntas(tituloDePreguntaObtenida, respuestasDePreguntaObtenida);
+}
 
-    for (var i = 0; i < respuestasDePreguntaObtenida.length; i++){
-        var estructuraRespuesta = '<li><input name = "answers" type="radio" value = "'+ i +'">' + respuestasDePreguntaObtenida[i] + ' </li>';
-        document.getElementById('listaRespuestas').innerHTML += estructuraRespuesta;
+function pintarPreguntas (pregunta, respuestas) {
+    var listaContenedora = '';
+
+    document.getElementById('preguntas').innerHTML = pregunta;
+    for (var i = 0; i < respuestas.length; i++) {
+        var estructuraRespuesta = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' + respuestas[i].id + '">' + respuestas[i].text + ' </li>';
+        listaContenedora += estructuraRespuesta;
     }
-    
-    //document.getElementById('respuestas').innerHTML = getQuestionRamdon().;
+    document.getElementById('listaRespuestas').innerHTML = listaContenedora;
 }
 
 obtenerDatosPreguntaAleatoria();
+
+// function eliminarPreguntaFormulada(questionFormulada) {
+    
+// }
 
 //SetInterval 20 segundos
 
