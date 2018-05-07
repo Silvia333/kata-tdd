@@ -26,34 +26,34 @@ getQuestions(function (data) {
 });
 
 function getQuestionRamdon(){
-    var posicionDeAleatorio = Math.floor(Math.random()* questions.length);
-    return questions[posicionDeAleatorio];
+    var randomPosition = Math.floor(Math.random()* questions.length);
+    return questions[randomPosition];
 }
 
-function obtenerDatosPreguntaAleatoria(){
-    var preguntaObtenida =  getQuestionRamdon();
-    var tituloDePreguntaObtenida = preguntaObtenida.question.text;
-    var respuestasDePreguntaObtenida = preguntaObtenida.answers;
-    var idDePreguntaObtenida = preguntaObtenida.question.id;
+function getRandomQuestionData(){
+    var questionObtained =  getQuestionRamdon();
+    var titleOfQuestionObtained = questionObtained.question.text;
+    var anwersOfQuestionObtained = questionObtained.answers;
+    var idOfQuestionObtained = questionObtained.question.id;
     
-    pintarPreguntas(tituloDePreguntaObtenida, respuestasDePreguntaObtenida);
-    eliminarPreguntaFormulada(idDePreguntaObtenida);
+    paintQuestions(titleOfQuestionObtained, anwersOfQuestionObtained);
+    deleteQuestionWritten(idOfQuestionObtained);
 }
 
-function pintarPreguntas (pregunta, respuestas) {
-    var listaContenedora = '';
+function paintQuestions (question, answers) {
+    var listOfAnswersContainer = '';
 
-    document.getElementById('preguntas').innerHTML = pregunta;
-    for (var i = 0; i < respuestas.length; i++) {
-        var estructuraRespuesta = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' + respuestas[i].id + '">' + respuestas[i].text + ' </li>';
-        listaContenedora += estructuraRespuesta;
+    document.getElementById('preguntas').innerHTML = question;
+    for (var i = 0; i < answers.length; i++) {
+        var itemListDefinition = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' + answers[i].id + '">' + answers[i].text + ' </li>';
+        listOfAnswersContainer += itemListDefinition;
     }
-    document.getElementById('listaRespuestas').innerHTML = listaContenedora;
+    document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
 }
 
-obtenerDatosPreguntaAleatoria();
+getRandomQuestionData();
 
-function eliminarPreguntaFormulada(idPreguntaFormulada) {
+function deleteQuestionWritten(idPreguntaFormulada) {
   
     for (var i = 0; i < questions.length; i++) {
         var idPreguntaEnArray = questions[i].question.id;
@@ -66,7 +66,7 @@ function eliminarPreguntaFormulada(idPreguntaFormulada) {
 
 //SetInterval 20 segundos
 
-var myInterval = setInterval(obtenerDatosPreguntaAleatoria, 10000);
+var myInterval = setInterval(getRandomQuestionData, 2000);
 
 // function stopMyInterval(){
 //     clearInterval(myInterval);
