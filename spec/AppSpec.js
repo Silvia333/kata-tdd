@@ -85,8 +85,6 @@ describe('comprobador de respuestas', function() {
   }); 
 });
 
-
-
 describe('calculo de marcador', function(){
     // funcion true
     // funcion false

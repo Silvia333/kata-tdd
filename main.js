@@ -8,7 +8,7 @@ var questions = [
             'Tokio',
             'Madrid'
         ],
-        correct: 0,
+        indexOfCorrectAnswer: 0,
     },
     {
         question : '¿Color de la bandera de Argentina?',
@@ -17,7 +17,7 @@ var questions = [
             'azul, blanco, azul',
             'rojo'
         ],
-        correct: 1,
+        indexOfCorrectAnswer: 1,
     },
     {
         question : '¿Cual es el rio que pasa por Toledo?',
@@ -26,7 +26,7 @@ var questions = [
             'Duero',
             'Tajo'
         ],
-        correct: 2,
+        indexOfCorrectAnswer: 2,
     },
     {
         question : '¿Aprenderé js?',
@@ -35,16 +35,16 @@ var questions = [
             'No convencidisima',
             'Tal vez'
         ],
-        correct: 2,
+        indexOfCorrectAnswer: 2,
     }
-]
+];
 
 function getQuestionRamdon(){
-    var aleatorio = Math.floor(Math.random()* questions.length);
+    var posicionDeAleatorio = Math.floor(Math.random()* questions.length);
     //borrar la pregunta
-    // questions.splice(aleatorio, 1);
-    // console.log(aleatorio);
-    return questions[aleatorio];
+    // questions.splice(posicionDeAleatorio, 1);
+    // console.log(posicionDeAleatorio);
+    return questions[posicionDeAleatorio];
 }
 
 function deleteQuestionUsed(questionUsed) {
@@ -64,5 +64,9 @@ obtenerDatosPreguntaAleatoria();
 
 //SetInterval 20 segundos
 
-setInterval(obtenerDatosPreguntaAleatoria, 5000);
+var myInterval = setInterval(obtenerDatosPreguntaAleatoria, 5000);
+
+// function stopMyInterval(){
+//     clearInterval(myInterval);
+// }
 obtenerDatosPreguntaAleatoria();
