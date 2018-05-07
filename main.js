@@ -27,10 +27,6 @@ getQuestions(function (data) {
 
 function getQuestionRamdon(){
     var posicionDeAleatorio = Math.floor(Math.random()* questions.length);
-    //borrar la pregunta
-    // questions.splice(posicionDeAleatorio, 1);
-    // console.log(posicionDeAleatorio);
-        
     return questions[posicionDeAleatorio];
 }
 
@@ -40,6 +36,7 @@ function obtenerDatosPreguntaAleatoria(){
     var respuestasDePreguntaObtenida = preguntaObtenida.answers;
     
     pintarPreguntas(tituloDePreguntaObtenida, respuestasDePreguntaObtenida);
+    eliminarPreguntaFormulada(preguntaObtenida.id);
 }
 
 function pintarPreguntas (pregunta, respuestas) {
@@ -55,13 +52,17 @@ function pintarPreguntas (pregunta, respuestas) {
 
 obtenerDatosPreguntaAleatoria();
 
-// function eliminarPreguntaFormulada(questionFormulada) {
-    
-// }
+function eliminarPreguntaFormulada(idPreguntaFormulada) {
+    for (var i = 0; i < questions.length; i++) {
+        if(questions[i].id === idPreguntaFormulada){
+            questions.splice(questions[i], 1);
+        }
+    } 
+ }
 
 //SetInterval 20 segundos
 
-var myInterval = setInterval(obtenerDatosPreguntaAleatoria, 20000);
+var myInterval = setInterval(obtenerDatosPreguntaAleatoria, 3000);
 
 // function stopMyInterval(){
 //     clearInterval(myInterval);
