@@ -34,9 +34,10 @@ function obtenerDatosPreguntaAleatoria(){
     var preguntaObtenida =  getQuestionRamdon();
     var tituloDePreguntaObtenida = preguntaObtenida.question.text;
     var respuestasDePreguntaObtenida = preguntaObtenida.answers;
+    var idDePreguntaObtenida = preguntaObtenida.question.id;
     
     pintarPreguntas(tituloDePreguntaObtenida, respuestasDePreguntaObtenida);
-    eliminarPreguntaFormulada(preguntaObtenida.id);
+    eliminarPreguntaFormulada(idDePreguntaObtenida);
 }
 
 function pintarPreguntas (pregunta, respuestas) {
@@ -53,16 +54,19 @@ function pintarPreguntas (pregunta, respuestas) {
 obtenerDatosPreguntaAleatoria();
 
 function eliminarPreguntaFormulada(idPreguntaFormulada) {
+  
     for (var i = 0; i < questions.length; i++) {
-        if(questions[i].id === idPreguntaFormulada){
-            questions.splice(questions[i], 1);
+        var idPreguntaEnArray = questions[i].question.id;
+        if (idPreguntaEnArray == idPreguntaFormulada){
+            var idAeliminar = idPreguntaEnArray;
+            questions.splice(idAeliminar, 1);                       
         }
     } 
  }
 
 //SetInterval 20 segundos
 
-var myInterval = setInterval(obtenerDatosPreguntaAleatoria, 3000);
+var myInterval = setInterval(obtenerDatosPreguntaAleatoria, 10000);
 
 // function stopMyInterval(){
 //     clearInterval(myInterval);
