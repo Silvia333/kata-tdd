@@ -27,69 +27,18 @@
 *           (0, fallo, 9 segundos) -> -1 puntos
 *
 * */
+/*
+*      Condiciones para generar preguntas:
 
-//excepcion de errores
-function describe(theSubject, funct){
-    try{
-        funct();
-        console.log('Ejecuta' + theSubject);
-    }
-    catch(error){
-        console.log('Ejecuta' + theSubject + error)
-    }
-}
-
-function it (theSubject, funct){
-    try{
-        funct();
-        console.log('Ejecuta' + theSubject);
-    }
-    catch(error){
-       throw theSubject + ':' + error;
-    }
-}
-
-function expect (actual){
-    return{
-        toEqual : function (expected){
-            if(actual != expected){
-                throw actual + ' is not ' + expected;
-            }
-        },
-        toBeTruthy : function (expected){
-            if(actual != true){
-                throw actual + ' is not ' + expected;
-            }
-        },
-        compare: function (actual, expected) {
-            return {
-                pass: (actual % 3) === 0
-            };
-        }
-    }
-}
-
-describe('comprobador de respuestas', function() {
-    function checkAnswer(question, answer){
-        return question.correct===parseInt(answer);
-    }
-    var questionTest = {
-        question : '¿Capital de Honduras?',
-        answers : [
-            'Tegucigalpa',
-            'Tokio',
-            'Madrid'
-        ],
-        correct: a
-    };
-   
-  it('comprobar si ha acertado', function(){
-    expect(checkAnswer(questionTest, 0)).toBeTruthy();
-  });
-  it('comprobar si number es divisible entre 3', function(){
-    expect(3).compare(3);
-  });  
-});
+    Si contesta, genera automáticamente otra pregunta
+        Si hace click en respuesta, borra la pregunta y se genera una nueva
+    Si no contesta, a los 20 segundos se genera otra pregunta
+        Se guarda la pregunta no contestada para el final?
+        Se borra?
+*
+*
+*
+*/
 
 describe('comprobador de respuestas', function() {
     function checkAnswer(question, answer){
@@ -133,64 +82,6 @@ describe('comprobador de respuestas', function() {
   it('comprobar el formato del objeto pregunta', function(){
     expect(checkObject(questionTestTwo)).toBeTruthy();
   }); 
-});
-
-describe('comprobador de respuestas', function() {
-	function isCorrect(question, userSelectedAnswer) {
-		if(question.id !== userSelectedAnswer.questionId) {
-			return false;
-		}
-		if (userSelectedAnswer.id !== question.correctAnswer.id) {
-			return false;
-		}
-		return true;
-    }
-    
-    it("reconoce una pregunta correcta", function() {
-		expect(isCorrect({
-						id: 1,
-						question: '¿Cual es la capital de Portugal?',
-						answers: [
-							{id: 1, value: 'Faro'},
-							{id: 2, value: 'Oporto'},
-							{id: 3, value: 'Lisboa'},
-
-						],
-						correctAnswer: {id: 3}
-					},
-					{questionId: 1, id: 3 })
-			).toBeTruthy();
-		});
-	it("reconoce una pregunta incorrecta", function() {
-		expect(isCorrect({
-						id: 1,
-						question: '¿Cual es la capital de Portugal?',
-						answers: [
-							{id: 1, value: 'Faro'},
-							{id: 2, value: 'Oporto'},
-							{id: 3, value: 'Lisboa'},
-
-						],
-						correctAnswer: {id: 3}
-					},
-					{questionId: 1, id: 2 })
-		).toBeFalsy();
-	});
-	it("reconoce una respuesta que no corresponde a la pregunta", function() {
-		expect(isCorrect({
-					id: 1,
-					question: '¿Cual es la capital de Portugal?',
-					answers: [
-						{id: 1, value: 'Faro'},
-						{id: 2, value: 'Oporto'},
-						{id: 3, value: 'Lisboa'},
-
-					],
-					correctAnswer: {id: 3}
-				},
-				{questionId: 5, id: 3 })
-		).toBeFalsy();
-	});
 });
 
 
