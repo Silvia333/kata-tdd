@@ -278,7 +278,7 @@ var myInterval = setInterval( function(){
 
 function comprobarRespuesta(){
     var miRespuestaElegida = document.miformulario.answers.value;
-    console.log(preguntaObtenida.correctAnswerId);
+    
     document.getElementById('mensaje').innerHTML = '';
     if(miRespuestaElegida == preguntaObtenida.correctAnswerId){
         document.getElementById('mensaje').innerHTML = 'Has acertado';
