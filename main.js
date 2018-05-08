@@ -105,12 +105,13 @@ function paintQuestions (question, answers) {
     for (var i = 0; i < answers.length; i++) {
         var itemListDefinition = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' + answers[i].id + '">' + answers[i].text + ' </li>';
         listOfAnswersContainer += itemListDefinition;
+       
     }
     document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
+   
 }
 
 getRandomQuestionData();
-
 
 var myInterval = setInterval( function(){
     if(questions.length > 0){
@@ -120,39 +121,61 @@ var myInterval = setInterval( function(){
     }
 }, 3000);
 
+function getAnswerInputValue(e) {
+    var inputValueOfAnswer = e.target.value;
+    console.log(inputValueOfAnswer);
+    compareAnswers (2, inputValueOfAnswer);
+    
+}
 
-// function stopMyInterval(){
-//     clearInterval(myInterval);
+document.miformulario.addEventListener('click', getAnswerInputValue);
+
+function compareAnswers (answerCorrect, answerOfUser){
+    if (answerCorrect === answerOfUser) {
+        isCorrect();
+    }
+    if (answerCorrect != answerOfUser) {
+        isIncorrect();
+    }
+}
+function isCorrect(answerCorrect, answerOfUser) {
+    return  console.log('Correcto');        
+    
+}
+function isIncorrect(answerCorrect, answerOfUser) {
+    return console.log('Incorrecto!'); 
+}
+
+
+
+
+// function recalculateWhenNoAnswer(score, seconds){
+//     if (seconds === ''){
+//         return score - 2;
+//     }
+//     if (seconds > 20){
+//         return score - 3;
+//     }
 // }
 
-
-// function recalcularNoContesta(puntos, tiempo){
-//     if (tiempo === ''){
-//         return puntos - 2;
+// function recalculateScoreWhenIsCorrect(score, seconds){
+//     if (seconds <= 2){
+//         return score + 2;
 //     }
-//     if (tiempo > 20){
-//         return puntos - 3;
+//     if (seconds >= 2 && seconds < 10){
+//         return ++score;
 //     }
-// }
-
-// function recalcularMarcadorAcierto(puntos, tiempo){
-//     if (tiempo <= 2){
-//         return puntos + 2;
-//     }
-//     if (tiempo >= 2 && tiempo < 10){
-//         return ++puntos;
-//     }
-//     if (tiempo > 10){
-//         return puntos;
+//     if (seconds > 10){
+//         return score;
 //     }
 // }
 
-// function recalcularMarcadorFallo(puntos, tiempo){
-//     if (tiempo > 10){
-//         return puntos - 2;
+// function recalculateScoreWhenIsIncorrect(score, seconds){
+//     if (seconds > 10){
+//         return score - 2;
 //     }
-//     if (tiempo <= 10){
-//         return puntos - 1;
+//     if (seconds <= 10){
+//         return score - 1;
 //     }
 // }
 
