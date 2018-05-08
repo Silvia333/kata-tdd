@@ -138,11 +138,11 @@ function compareAnswers (answerCorrect, answerOfUser){
         isIncorrect();
     }
 }
-function isCorrect(answerCorrect, answerOfUser) {
+function isCorrect() {
     return  console.log('Correcto');        
     
 }
-function isIncorrect(answerCorrect, answerOfUser) {
+function isIncorrect() {
     return console.log('Incorrecto!'); 
 }
 
