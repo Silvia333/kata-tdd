@@ -116,9 +116,29 @@ function paintQuestions () {
 }
 paintQuestions();
 
+var seconds = 0;  
+myInterval = setInterval(function () {
+    seconds++;
+    
+    console.log(seconds);
+    if (btnNext.disabled === true) {
+        
+        console.log(questions);
+        if (questions.length > 0 && seconds > 10) {
+            paintQuestions();
+        }
+        else{
+            clearInterval(myInterval);
+        }
+    } else {
+        console.log(seconds);
+    }
+}, 1000);
+   
+
 // var myInterval = setInterval( function(){
 //     if(questions.length > 0){
-//         getRandomQuestionData();
+//         paintQuestions();
 //     }else{
 //         clearInterval(myInterval);
 //     }
@@ -127,7 +147,6 @@ paintQuestions();
 function getInputValueAndCompare(target) {
     var inputValueOfAnswer = target.value;
     var correctAnswerId = questionObtained.correctAnswerId;
-    console.log(inputValueOfAnswer);
     compareAnswers (correctAnswerId, inputValueOfAnswer);  
     
 }
