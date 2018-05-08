@@ -1,18 +1,75 @@
 function getQuestions(callback) {
     var serverData = [
         {
-            question: { id: 1, text: 'Pregunta1' },
-            answers: [{ id: 1, text: 'A1' }, { id: 2, text: 'A2' }, { id: 3, text: 'A3' }],
+            question: 
+                { 
+                    id: 1, text: '¿Capital de Honduras?' 
+                },
+            answers: [
+                        { 
+                            id: 1, text: 'Tegucigalpa' 
+                        }, 
+                        { 
+                            id: 2, text: 'Lima' 
+                        }, 
+                        { 
+                            id: 3, text: 'Buenos Aires' 
+                        }
+                    ],
             correctAnswerId: 1
         },
         {
-            question: { id: 2, text: 'Pregunta2' },
-            answers: [{ id: 4, text: 'B1' }, { id: 5, text: 'B2' }, { id: 6, text: 'B3' }],
+            question: 
+                {
+                 id: 2, text: 'Rio que pasa por Toledo' 
+                },
+            answers: [
+                        { 
+                            id: 4, text: 'Miño' 
+                        }, 
+                        { 
+                            id: 5, text: 'Tajo' 
+                        }, 
+                        { 
+                            id: 6, text: 'Duero' 
+                        }
+                    ],
             correctAnswerId: 5
         },
         {
-            question: { id: 3, text: 'Pregunta3' },
-            answers: [{ id: 7, text: 'C1' }, { id: 8, text: 'C2' }, { id: 9, text: 'C3' }],
+            question: 
+                { 
+                    id: 3, text: 'Color Bandera de Argentina' 
+                },
+            answers: [
+                        { 
+                            id: 7, text: 'Rojo Blanco' 
+                        }, 
+                        { 
+                            id: 8, text: 'Blanco y Verde' 
+                        }, 
+                        {
+                            id: 9, text: 'Azul Blanco Azul' 
+                            }
+                    ],
+            correctAnswerId: 9
+        },
+        {
+            question: 
+                { 
+                    id: 3, text: '¿Quién pintó la capilla sixtina?' 
+                },
+            answers: [
+                        { 
+                            id: 7, text: 'Picasso' 
+                        }, 
+                        { 
+                            id: 8, text: 'Velazquez' 
+                        }, 
+                        {
+                            id: 9, text: 'Miguel Angel' 
+                            }
+                    ],
             correctAnswerId: 9
         },
     ]
@@ -26,8 +83,10 @@ getQuestions(function (data) {
 });
 
 function getQuestionRamdon(){
-    var posicionDeAleatorio = Math.floor(Math.random()* questions.length);
-    return questions[posicionDeAleatorio];
+    var posicionDeAleatorio = Math.floor(Math.random()* questions.length); 
+    var preguntaAdevolver = questions[posicionDeAleatorio];
+    questions.splice(posicionDeAleatorio, 1);
+    return preguntaAdevolver;
 }
 
 function obtenerDatosPreguntaAleatoria(){
@@ -37,7 +96,6 @@ function obtenerDatosPreguntaAleatoria(){
     var idDePreguntaObtenida = preguntaObtenida.question.id;
     
     pintarPreguntas(tituloDePreguntaObtenida, respuestasDePreguntaObtenida);
-    eliminarPreguntaFormulada(idDePreguntaObtenida);
 }
 
 function pintarPreguntas (pregunta, respuestas) {
@@ -45,7 +103,8 @@ function pintarPreguntas (pregunta, respuestas) {
 
     document.getElementById('preguntas').innerHTML = pregunta;
     for (var i = 0; i < respuestas.length; i++) {
-        var estructuraRespuesta = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' + respuestas[i].id + '">' + respuestas[i].text + ' </li>';
+        var estructuraRespuesta = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' 
+                + respuestas[i].id + '">' + respuestas[i].text + ' </li>';
         listaContenedora += estructuraRespuesta;
     }
     document.getElementById('listaRespuestas').innerHTML = listaContenedora;
@@ -53,54 +112,10 @@ function pintarPreguntas (pregunta, respuestas) {
 
 obtenerDatosPreguntaAleatoria();
 
-function eliminarPreguntaFormulada(idPreguntaFormulada) {
-  
-    for (var i = 0; i < questions.length; i++) {
-        var idPreguntaEnArray = questions[i].question.id;
-        if (idPreguntaEnArray == idPreguntaFormulada){
-            var idAeliminar = idPreguntaEnArray;
-            questions.splice(idAeliminar, 1);                       
-        }
-    } 
- }
-
-//SetInterval 20 segundos
-
-var myInterval = setInterval(obtenerDatosPreguntaAleatoria, 10000);
-
-// function stopMyInterval(){
-//     clearInterval(myInterval);
-// }
-
-
-// function recalcularNoContesta(puntos, tiempo){
-//     if (tiempo === ''){
-//         return puntos - 2;
-//     }
-//     if (tiempo > 20){
-//         return puntos - 3;
-//     }
-// }
-
-// function recalcularMarcadorAcierto(puntos, tiempo){
-//     if (tiempo <= 2){
-//         return puntos + 2;
-//     }
-//     if (tiempo >= 2 && tiempo < 10){
-//         return ++puntos;
-//     }
-//     if (tiempo > 10){
-//         return puntos;
-//     }
-// }
-
-// function recalcularMarcadorFallo(puntos, tiempo){
-//     if (tiempo > 10){
-//         return puntos - 2;
-//     }
-//     if (tiempo <= 10){
-//         return puntos - 1;
-//     }
-// }
-
-
+var myInterval = setInterval( function(){
+    if(questions.length > 0){
+        obtenerDatosPreguntaAleatoria();
+    }else{
+        clearInterval(myInterval);
+    }
+}, 3000);
