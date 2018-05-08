@@ -1,4 +1,5 @@
-function getQuestions(callback) {
+var app = (function (){
+    function getQuestions(callback) {
     var serverData = [
         {
             question: 
@@ -78,6 +79,12 @@ function getQuestions(callback) {
 
 var questions = [];
 var questionObtained;
+    var btnNext = document.getElementById('btn-next');
+
+window.onload = function (){
+    
+    btnNext.disabled = true;
+};
 
 getQuestions(function (data) {
     questions = data;
@@ -91,43 +98,57 @@ function getQuestionRamdon(){
     return questionToGet;
 }
 
-function getRandomQuestionData(){
-    questionObtained =  getQuestionRamdon();
+function paintQuestions () {
+    questionObtained = getQuestionRamdon();
     var titleOfQuestionObtained = questionObtained.question.text;
     var anwersOfQuestionObtained = questionObtained.answers;
     var idOfQuestionObtained = questionObtained.question.id;
-
-    paintQuestions(titleOfQuestionObtained, anwersOfQuestionObtained);
-}
-
-getRandomQuestionData();
-
-function paintQuestions (question, answers) {
     var listOfAnswersContainer = '';
 
-    document.getElementById('preguntas').innerHTML = question;
-    for (var i = 0; i < answers.length; i++) {
-        var itemListDefinition = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' + answers[i].id + '">' + answers[i].text + ' </li>';
+    document.getElementById('preguntas').innerHTML = titleOfQuestionObtained;
+    for (var i = 0; i < anwersOfQuestionObtained.length; i++) {
+        var itemListDefinition = '<li><input id= "item-' + i + '" name = "answers" type="radio" required value = "' + anwersOfQuestionObtained[i].id + '">' + anwersOfQuestionObtained[i].text + ' </li>';
         listOfAnswersContainer += itemListDefinition;
        
     }
     document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
    
 }
+paintQuestions();
 
-var myInterval = setInterval( function(){
-    if(questions.length > 0){
-        getRandomQuestionData();
-    }else{
-        clearInterval(myInterval);
-    }
-}, 3000);
+// var myInterval = setInterval( function(){
+//     if(questions.length > 0){
+//         getRandomQuestionData();
+//     }else{
+//         clearInterval(myInterval);
+//     }
+// }, 3000);
 
-function getInputValueAndCompare(e) {
-    var inputValueOfAnswer = e.target.value;
+function getInputValueAndCompare(target) {
+    var inputValueOfAnswer = target.value;
+    var correctAnswerId = questionObtained.correctAnswerId;
     console.log(inputValueOfAnswer);
-    compareAnswers (questionObtained.correctAnswerId, inputValueOfAnswer);
+    compareAnswers (correctAnswerId, inputValueOfAnswer);  
     
+}
+
+function preventNextQuestion (targetRadio) {
+    if (targetRadio.checked) {
+        btnNext.disabled = false;
+    }
+    else{
+        btnNext.disabled = true;
+    }
+}
+
+function handleEvents(event) {
+    var target = event.target;
+    getInputValueAndCompare(target);
+    preventNextQuestion(target);
+}
+
+function passToNextQuestion() {
+    paintQuestions();    
 }
 
 function compareAnswers (answerCorrect, answerOfUser){
@@ -146,7 +167,8 @@ function isIncorrect() {
     return console.log('Incorrecto!'); 
 }
 
-document.miformulario.addEventListener('click', getInputValueAndCompare);
+document.miformulario.addEventListener('click', handleEvents);
+btnNext.addEventListener('click', passToNextQuestion);
 
 
 // function recalculateWhenNoAnswer(score, seconds){
@@ -178,6 +200,13 @@ document.miformulario.addEventListener('click', getInputValueAndCompare);
 //         return score - 1;
 //     }
 // }
-
+    return {
+        getQuestionRamdon: getQuestionRamdon,
+        paintQuestions: paintQuestions,
+        getInputValueAndCompare: getInputValueAndCompare,
+        passToNextQuestion: passToNextQuestion
+        
+    };
+})();
 
 

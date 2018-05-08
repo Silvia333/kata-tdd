@@ -39,12 +39,6 @@
 *
 *
 */
-// describe('comprobar valor del input', function() {
-
-//     it('comprobar que el valor del input es un número', function () {
-//         expect(valueOptionSelected).toBe(number);
-//     });
-// });
 
 describe('comprobador de respuestas', function() {
     function checkAnswer(question, answer){
