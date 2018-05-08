@@ -74,9 +74,11 @@ function getQuestions(callback) {
         },
     ]
     callback(serverData);
-};
+}
 
 var questions = [];
+var questionObtained;
+
 getQuestions(function (data) {
     questions = data;
     /*...*/
@@ -90,13 +92,15 @@ function getQuestionRamdon(){
 }
 
 function getRandomQuestionData(){
-    var questionObtained =  getQuestionRamdon();
+    questionObtained =  getQuestionRamdon();
     var titleOfQuestionObtained = questionObtained.question.text;
     var anwersOfQuestionObtained = questionObtained.answers;
     var idOfQuestionObtained = questionObtained.question.id;
 
     paintQuestions(titleOfQuestionObtained, anwersOfQuestionObtained);
 }
+
+getRandomQuestionData();
 
 function paintQuestions (question, answers) {
     var listOfAnswersContainer = '';
@@ -111,8 +115,6 @@ function paintQuestions (question, answers) {
    
 }
 
-getRandomQuestionData();
-
 var myInterval = setInterval( function(){
     if(questions.length > 0){
         getRandomQuestionData();
@@ -121,17 +123,15 @@ var myInterval = setInterval( function(){
     }
 }, 3000);
 
-function getAnswerInputValue(e) {
+function getInputValueAndCompare(e) {
     var inputValueOfAnswer = e.target.value;
     console.log(inputValueOfAnswer);
-    compareAnswers (2, inputValueOfAnswer);
+    compareAnswers (questionObtained.correctAnswerId, inputValueOfAnswer);
     
 }
 
-document.miformulario.addEventListener('click', getAnswerInputValue);
-
 function compareAnswers (answerCorrect, answerOfUser){
-    if (answerCorrect === answerOfUser) {
+    if (answerCorrect == answerOfUser) {
         isCorrect();
     }
     if (answerCorrect != answerOfUser) {
@@ -146,7 +146,7 @@ function isIncorrect() {
     return console.log('Incorrecto!'); 
 }
 
-
+document.miformulario.addEventListener('click', getInputValueAndCompare);
 
 
 // function recalculateWhenNoAnswer(score, seconds){
