@@ -83,39 +83,78 @@ getQuestions(function (data) {
 });
 
 function getQuestionRamdon(){
-    var posicionDeAleatorio = Math.floor(Math.random()* questions.length); 
-    var preguntaAdevolver = questions[posicionDeAleatorio];
-    questions.splice(posicionDeAleatorio, 1);
-    return preguntaAdevolver;
+    var randomPosition = Math.floor(Math.random()* questions.length);
+    var questionToGet = questions[randomPosition];
+    questions.splice(randomPosition, 1);
+    return questionToGet;
 }
 
-function obtenerDatosPreguntaAleatoria(){
-    var preguntaObtenida =  getQuestionRamdon();
-    var tituloDePreguntaObtenida = preguntaObtenida.question.text;
-    var respuestasDePreguntaObtenida = preguntaObtenida.answers;
-    var idDePreguntaObtenida = preguntaObtenida.question.id;
-    
-    pintarPreguntas(tituloDePreguntaObtenida, respuestasDePreguntaObtenida);
+function getRandomQuestionData(){
+    var questionObtained =  getQuestionRamdon();
+    var titleOfQuestionObtained = questionObtained.question.text;
+    var anwersOfQuestionObtained = questionObtained.answers;
+    var idOfQuestionObtained = questionObtained.question.id;
+
+    paintQuestions(titleOfQuestionObtained, anwersOfQuestionObtained);
 }
 
-function pintarPreguntas (pregunta, respuestas) {
-    var listaContenedora = '';
+function paintQuestions (question, answers) {
+    var listOfAnswersContainer = '';
 
-    document.getElementById('preguntas').innerHTML = pregunta;
-    for (var i = 0; i < respuestas.length; i++) {
-        var estructuraRespuesta = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' 
-                + respuestas[i].id + '">' + respuestas[i].text + ' </li>';
-        listaContenedora += estructuraRespuesta;
+    document.getElementById('preguntas').innerHTML = question;
+    for (var i = 0; i < answers.length; i++) {
+        var itemListDefinition = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "' + answers[i].id + '">' + answers[i].text + ' </li>';
+        listOfAnswersContainer += itemListDefinition;
     }
-    document.getElementById('listaRespuestas').innerHTML = listaContenedora;
+    document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
 }
 
-obtenerDatosPreguntaAleatoria();
+getRandomQuestionData();
+
 
 var myInterval = setInterval( function(){
     if(questions.length > 0){
-        obtenerDatosPreguntaAleatoria();
+        getRandomQuestionData();
     }else{
         clearInterval(myInterval);
     }
 }, 3000);
+
+
+// function stopMyInterval(){
+//     clearInterval(myInterval);
+// }
+
+
+// function recalcularNoContesta(puntos, tiempo){
+//     if (tiempo === ''){
+//         return puntos - 2;
+//     }
+//     if (tiempo > 20){
+//         return puntos - 3;
+//     }
+// }
+
+// function recalcularMarcadorAcierto(puntos, tiempo){
+//     if (tiempo <= 2){
+//         return puntos + 2;
+//     }
+//     if (tiempo >= 2 && tiempo < 10){
+//         return ++puntos;
+//     }
+//     if (tiempo > 10){
+//         return puntos;
+//     }
+// }
+
+// function recalcularMarcadorFallo(puntos, tiempo){
+//     if (tiempo > 10){
+//         return puntos - 2;
+//     }
+//     if (tiempo <= 10){
+//         return puntos - 1;
+//     }
+// }
+
+
+
