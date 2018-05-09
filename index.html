@@ -11,11 +11,7 @@
         <div class="trivial">
             <h1>Saber y Ganar</h1>
             <h5>Responde mejor y más rápido que los demás</h5>
-            <div class="container">
-                <form name="form">
-                    <input type="text" name="cronometro" value="00" readonly="readonly" />
-                </form>
-                           
+            <div class="container">  
                 <div class="wrapper-preguntasrespuestas">
                     <h2 id="preguntas"></h2>
                     <form name="miformulario" id="respuestas">
@@ -25,6 +21,9 @@
                     <div class="botones">
                         <button type="button" id="enviar" class="floatL disabled" disabled>Enviar respuesta</button>
                         <button type="button" id="siguiente" class="floatL">Siguiente pregunta</button>
+                    </div>
+                    <div class="reloj">
+                        <div id="displayReloj"></div>
                     </div>
                 </div>
                 <div class="wrapper-marcador">
