@@ -138,24 +138,8 @@ function mensajeRespuestas(mensaje){
 
 document.miformulario.addEventListener('change', esRespuestaCorrecta);
 
-
-
-
-
-
-// var myInterval = setInterval( function(){
-   
-//     if(questions.length > 0){
-//         pintarPreguntas(); 
-//     }else{
-//         clearInterval(myInterval);
-//         document.getElementById('siguiente').style.display = 'none';
-//         document.getElementById('enviar').style.display = 'block';
-//     }
-// }, 20000);
             var t;
 			function reloj() {
-
 				if(segundos > 9){
 				    document.getElementById('displayReloj').innerHTML = segundos;
 				}else{
@@ -165,7 +149,6 @@ document.miformulario.addEventListener('change', esRespuestaCorrecta);
                     alert('Tu tiempo ha terminado'); 
                     clearInterval(t);
                     siguientePregunta();
-                    document.getElementById('displayReloj').innerHTML = segundos;
 				}else{
                     t = setTimeout(function(){
                         reloj();
@@ -188,13 +171,11 @@ function siguientePregunta(){
         if(esRespuestaCorrecta() === RESPUESTA.VACIA){
             recalcularNoContesta();
         }
-    clearInterval(t);
-    segundos = 0;
-    pintarPreguntas();
-    reloj();
+        pintarPreguntas();
+        segundos = 0;
+        reloj();
     }else{
-        document.getElementById('siguiente').style.display = 'none';
-        document.getElementById('enviar').sstyle.display = 'block';
+        document.getElementById('enviar').style.display = 'block';
     }
 }
 
