@@ -4,6 +4,7 @@ var app = (function (){
     var btnNext;
     var seconds = 0;
     var timer = null;
+    var score = 0;
 
     function getQuestions(callback) {
     var serverData = [
@@ -111,12 +112,13 @@ function paintQuestions () {
     document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
    
 }
-
-function getInputValueAndCompare(target) {
-    var inputValueOfAnswer = target.value;
-    var correctAnswerId = questionObtained.correctAnswerId;
-    compareAnswers (correctAnswerId, inputValueOfAnswer);  
-    
+var inputValueOfAnswer;
+var correctAnswerId;
+function getValuesToCompare(target) {    
+    inputValueOfAnswer = target.value;
+    correctAnswerId = questionObtained.correctAnswerId;
+    // valuesToCompare = (inputValueOfAnswer, correctAnswerId);
+    // return valuesToCompare;     
 }
 
 function preventNextQuestion (targetRadio) {
@@ -128,33 +130,60 @@ function preventNextQuestion (targetRadio) {
     }
 }
 
-function handleEvents(event) {
+function handleEventsOfRadios(event) {
     var target = event.target;
-    getInputValueAndCompare(target);
+    getValuesToCompare(target);
     preventNextQuestion(target);
 }
 
 function compareAnswers (answerCorrect, answerOfUser){
     if (answerCorrect == answerOfUser) {
-        isCorrect();
+        doWhenIsCorrect();
+        recalculateScoreWhenIsCorrect();
+        return true;      
     }
     if (answerCorrect != answerOfUser) {
-        isIncorrect();
+        doWhenIsIncorrect();
+        return false;
     }
 }
-function isCorrect() {
-    return console.log('Correcto');        
+function doWhenIsCorrect() {
+    // recalculateScoreWhenIsCorrect();
+    return console.log('Correcto!');        
     
 }
-function isIncorrect() {
+    function doWhenIsIncorrect() {
     return console.log('Incorrecto!'); 
 }
-
+function recalculateScoreWhenIsCorrect() {
+    if (seconds <= 2) {
+        return score + 2;
+    }
+    if (seconds <= 10) {
+        return score + 1;
+    }
+    if (seconds > 10) {
+        return score;
+    }
+}
 function goToNextQuestion() {
-    paintQuestions();
+    // if (result === true) {
+        
+    //     console.log(`La puntuación es ${score}`);
+    // }
+    console.log(compareAnswers(inputValueOfAnswer, correctAnswerId));
+    paintQuestions();   
+    console.log(seconds)
     resetAnswerTimer();
 }
 
+//De momento no la uso
+function getAnswerTime() {
+    console.log(seconds);
+    return seconds;
+}
+
+//Funciones de temporizador
 function startTimer() {
     if (!timer) {
         timer = setInterval(setTimeAndConditions, 1000);
@@ -163,9 +192,7 @@ function startTimer() {
 
 function setTimeAndConditions() {
     seconds++;
-    console.log(seconds);
     if (btnNext.disabled === true) {
-        console.log('con botón desabilitado');
         if (questions.length > 0 && seconds > 5) {
             paintQuestions();
             resetAnswerTimer();
@@ -174,23 +201,11 @@ function setTimeAndConditions() {
             stopTimer();
         }
     }
-    // else if (btnNext.disabled === false){
-    //     console.log('con boton habilitado');
-    //     if (questions.length > 0 && seconds < 5) {
-    //         paintQuestions();
-    //         seconds = 0;
-    //     } 
-    //     // else if (questions.length > 0 && seconds < 5) {
-    //     //     return console.log(seconds)
-    //     //     seconds = 0;
-    //     // }
-    // }
 }
 
 function stopTimer() {
     if (timer) {
-        clearInterval(timer);
-        
+        clearInterval(timer);        
     }
     timer = null;
     resetAnswerTimer();
@@ -203,7 +218,7 @@ function resetAnswerTimer () {
 function startApp() {
     btnNext = document.getElementById('btn-next');
     btnNext.disabled = true;
-    document.miformulario.addEventListener('click', handleEvents);
+    document.miformulario.addEventListener('click', handleEventsOfRadios);
     btnNext.addEventListener('click', goToNextQuestion);
     
     paintQuestions();
@@ -228,17 +243,6 @@ function startApp() {
 //     }
 // }
 
-// function recalculateScoreWhenIsCorrect(score, seconds){
-//     if (seconds <= 2){
-//         return score + 2;
-//     }
-//     if (seconds >= 2 && seconds < 10){
-//         return ++score;
-//     }
-//     if (seconds > 10){
-//         return score;
-//     }
-// }
 
 // function recalculateScoreWhenIsIncorrect(score, seconds){
 //     if (seconds > 10){
@@ -251,7 +255,7 @@ function startApp() {
     return {
         getQuestionRamdon: getQuestionRamdon,
         paintQuestions: paintQuestions,
-        getInputValueAndCompare: getInputValueAndCompare,
+        getInputValueAndCompare: getValuesToCompare,
         startApp: startApp
         
     };
