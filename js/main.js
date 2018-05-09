@@ -1,142 +1,145 @@
-var app = (function (){
-    var questions = [];
-    var questionObtained;
-    var btnNext;
-    var seconds = 0;
-    var timer = null;
-    var score = 0;
+const app = (function (){
+    let questions = [];
+    let questionObtained;
+    let btnNext;
+    let seconds = 0;
+    let timer = null;
+    let score = 0;
 
-    function getQuestions(callback) {
-    var serverData = [
-        {
-            question: 
-                { 
-                    id: 1, text: '¿Capital de Honduras?' 
-                },
-            answers: [
-                        { 
-                            id: 1, text: 'Tegucigalpa' 
-                        }, 
-                        { 
-                            id: 2, text: 'Lima' 
-                        }, 
-                        { 
-                            id: 3, text: 'Buenos Aires' 
-                        }
-                    ],
-            correctAnswerId: 1
-        },
-        {
-            question: 
-                {
-                 id: 2, text: 'Rio que pasa por Toledo' 
-                },
-            answers: [
-                        { 
-                            id: 4, text: 'Miño' 
-                        }, 
-                        { 
-                            id: 5, text: 'Tajo' 
-                        }, 
-                        { 
-                            id: 6, text: 'Duero' 
-                        }
-                    ],
-            correctAnswerId: 5
-        },
-        {
-            question: 
-                { 
-                    id: 3, text: 'Color Bandera de Argentina' 
-                },
-            answers: [
-                        { 
-                            id: 7, text: 'Rojo Blanco' 
-                        }, 
-                        { 
-                            id: 8, text: 'Blanco y Verde' 
-                        }, 
-                        {
-                            id: 9, text: 'Azul Blanco Azul' 
+    const getQuestions = callback => {
+        const serverData = [
+            {
+                question: 
+                    { 
+                        id: 1, text: '¿Capital de Honduras?' 
+                    },
+                answers: [
+                            { 
+                                id: 1, text: 'Tegucigalpa' 
+                            }, 
+                            { 
+                                id: 2, text: 'Lima' 
+                            }, 
+                            { 
+                                id: 3, text: 'Buenos Aires' 
                             }
-                    ],
-            correctAnswerId: 9
-        },
-        {
-            question: 
-                { 
-                    id: 3, text: '¿Quién pintó la capilla sixtina?' 
-                },
-            answers: [
-                        { 
-                            id: 7, text: 'Picasso' 
-                        }, 
-                        { 
-                            id: 8, text: 'Velazquez' 
-                        }, 
-                        {
-                            id: 9, text: 'Miguel Angel' 
+                        ],
+                correctAnswerId: 1
+            },
+            {
+                question: 
+                    {
+                    id: 2, text: 'Rio que pasa por Toledo' 
+                    },
+                answers: [
+                            { 
+                                id: 4, text: 'Miño' 
+                            }, 
+                            { 
+                                id: 5, text: 'Tajo' 
+                            }, 
+                            { 
+                                id: 6, text: 'Duero' 
                             }
-                    ],
-            correctAnswerId: 9
-        },
-    ]
-    callback(serverData);
-}
+                        ],
+                correctAnswerId: 5
+            },
+            {
+                question: 
+                    { 
+                        id: 3, text: 'Color Bandera de Argentina' 
+                    },
+                answers: [
+                            { 
+                                id: 7, text: 'Rojo Blanco' 
+                            }, 
+                            { 
+                                id: 8, text: 'Blanco y Verde' 
+                            }, 
+                            {
+                                id: 9, text: 'Azul Blanco Azul' 
+                                }
+                        ],
+                correctAnswerId: 9
+            },
+            {
+                question: 
+                    { 
+                        id: 3, text: '¿Quién pintó la capilla sixtina?' 
+                    },
+                answers: [
+                            { 
+                                id: 7, text: 'Picasso' 
+                            }, 
+                            { 
+                                id: 8, text: 'Velazquez' 
+                            }, 
+                            {
+                                id: 9, text: 'Miguel Angel' 
+                                }
+                        ],
+                correctAnswerId: 9
+            },
+        ]
+        callback(serverData);
+    };
 
-getQuestions(function (data) {
-    questions = data;
-    /*...*/
-});
+    getQuestions(function (data) {
+        questions = data;
+        /*...*/
+    });
 
-function getQuestionRamdon(){
-    var randomPosition = Math.floor(Math.random()* questions.length);
-    var questionToGet = questions[randomPosition];
-    questions.splice(randomPosition, 1);
-    return questionToGet;
-}
+    const getQuestionRamdon = () => {
+        const randomPosition = Math.floor(Math.random()* questions.length);
+        let questionToGet = questions[randomPosition];
+        questions.splice(randomPosition, 1);
+        return questionToGet;
+    };
 
-function paintQuestions () {
-    questionObtained = getQuestionRamdon();
-    var titleOfQuestionObtained = questionObtained.question.text;
-    var anwersOfQuestionObtained = questionObtained.answers;
-    var idOfQuestionObtained = questionObtained.question.id;
-    var listOfAnswersContainer = '';
+    const paintQuestions = () => {
+        questionObtained = getQuestionRamdon();
+        const titleOfQuestionObtained = questionObtained.question.text;
+        const anwersOfQuestionObtained = questionObtained.answers;
+        const idOfQuestionObtained = questionObtained.question.id;
+        let listOfAnswersContainer = '';
 
-    document.getElementById('preguntas').innerHTML = titleOfQuestionObtained;
-    for (var i = 0; i < anwersOfQuestionObtained.length; i++) {
-        var itemListDefinition = '<li><input id= "item-' + i + '" name = "answers" type="radio" required value = "' + anwersOfQuestionObtained[i].id + '">' + anwersOfQuestionObtained[i].text + ' </li>';
-        listOfAnswersContainer += itemListDefinition;
-       
-    }
-    document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
-   
-}
+        document.getElementById('preguntas').innerHTML = titleOfQuestionObtained;
+        for (var i = 0; i < anwersOfQuestionObtained.length; i++) {
+            var itemListDefinition = 
+                `<li>
+                    <input id="item-${i}" name="answers" type="radio" required value="${anwersOfQuestionObtained[i].id}" >${anwersOfQuestionObtained[i].text}
+                </li>`;
+            listOfAnswersContainer += itemListDefinition;
+        
+        }
+        document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
+    
+    };
 
-function preventNextQuestion(targetRadio) {
-    if (targetRadio.checked) {
-        btnNext.disabled = false;
-    }
-    else {
-        btnNext.disabled = true;
-    }
-}
+    const preventNextQuestion = (targetRadio) => {
+        if (targetRadio.checked) {
+            btnNext.disabled = false;
+        }
+        else {
+            btnNext.disabled = true;
+        }
+    };
 
-var inputValueOfAnswer;
-var correctAnswerId;
-function getValuesToCompare(target) {    
+let inputValueOfAnswer;
+let correctAnswerId;
+const getValuesToCompare = (target) => {    
     inputValueOfAnswer = target.value;
     correctAnswerId = questionObtained.correctAnswerId;
 
 }
 
-function handleEventsOfRadios(event) {
-    var target = event.target;
+const handleEventsOfRadios = (event) => {
+    const target = event.target;
     getValuesToCompare(target);
     preventNextQuestion(target);
 }
 
-function compareAnswers (answerCorrect, answerOfUser){
+const compareAnswers = (answerCorrect, answerOfUser) => {
     if (answerCorrect == answerOfUser) {
         showMsgWhenIsCorrect();
         showScore(recalculateScoreWhenIsCorrect);
@@ -150,20 +153,11 @@ function compareAnswers (answerCorrect, answerOfUser){
 }
 
 //Mensajes que se mostrarán en la interfaz
-function showMsgWhenIsCorrect() {
-    return console.log('Correcto!');        
-    
-}
+const showMsgWhenIsCorrect = () => console.log('Correcto!');     
 
-function showMsgWhenIsIncorrect() {
-    return console.log('Incorrecto!'); 
-}
+const showMsgWhenIsIncorrect = () => console.log('Incorrecto!'); 
 
-function showScore(myRecalculateFunction) {
-    console.log(`La puntuación es ${myRecalculateFunction(score, seconds)}`);
-}
-
-function recalculateScoreWhenIsCorrect(score, seconds) {
+const recalculateScoreWhenIsCorrect = (score, seconds) => {
     if (seconds <= 2) {
         return score + 2;
     }
@@ -173,38 +167,42 @@ function recalculateScoreWhenIsCorrect(score, seconds) {
     if (seconds > 10) {
         return score;
     }
-}
+};
 
-function recalculateScoreWhenIsIncorrect(score, seconds) {
+const recalculateScoreWhenIsIncorrect = (score, seconds) => {
     if (seconds > 10) {
         return score - 2;
     }
     if (seconds <= 10) {
         return score - 1;
     }
-}
+};
 
-function goToNextQuestion() {
+const showScore = (myRecalculateFunction) => {
+    console.log(`La puntuación es ${myRecalculateFunction(score, seconds)}`);
+};
+
+const goToNextQuestion = () => {
     compareAnswers(inputValueOfAnswer, correctAnswerId);
     paintQuestions();   
-    console.log(seconds)
+    console.log(`Tiempo transcurrido ${seconds} segundos`)
     resetAnswerTimer();
-}
+};
 
 //De momento no la uso
-function getAnswerTime() {
+const getAnswerTime = () => {
     console.log(seconds);
     return seconds;
 }
 
 //Funciones de temporizador
-function startTimer() {
+const startTimer = () => {
     if (!timer) {
         timer = setInterval(setTimeAndConditions, 1000);
     }
 }
 
-function setTimeAndConditions() {
+const setTimeAndConditions = () => {
     seconds++;
     if (btnNext.disabled === true) {
         if (questions.length > 0 && seconds > 5) {
@@ -217,7 +215,7 @@ function setTimeAndConditions() {
     }
 }
 
-function stopTimer() {
+const stopTimer = () => {
     if (timer) {
         clearInterval(timer);        
     }
@@ -225,11 +223,11 @@ function stopTimer() {
     resetAnswerTimer();
 }
 
-function resetAnswerTimer () {
+const resetAnswerTimer = () => {
     seconds = 0;
 }
 
-function startApp() {
+const startApp = () => {
     btnNext = document.getElementById('btn-next');
     btnNext.disabled = true;
     document.miformulario.addEventListener('click', handleEventsOfRadios);
@@ -238,15 +236,7 @@ function startApp() {
     paintQuestions();
 
     startTimer();
-
-    
-  
 }
-
-
-
-
-
 
 // function recalculateWhenNoAnswer(score, seconds){
 //     if (seconds === ''){
