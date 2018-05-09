@@ -81,11 +81,6 @@ var questions = [];
 var questionObtained;
     var btnNext = document.getElementById('btn-next');
 
-window.onload = function (){
-    
-    btnNext.disabled = true;
-};
-
 getQuestions(function (data) {
     questions = data;
     /*...*/
@@ -114,35 +109,6 @@ function paintQuestions () {
     document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
    
 }
-paintQuestions();
-
-var seconds = 0;  
-myInterval = setInterval(function () {
-    seconds++;
-    
-    console.log(seconds);
-    if (btnNext.disabled === true) {
-        
-        console.log(questions);
-        if (questions.length > 0 && seconds > 10) {
-            paintQuestions();
-        }
-        else{
-            clearInterval(myInterval);
-        }
-    } else {
-        console.log(seconds);
-    }
-}, 1000);
-   
-
-// var myInterval = setInterval( function(){
-//     if(questions.length > 0){
-//         paintQuestions();
-//     }else{
-//         clearInterval(myInterval);
-//     }
-// }, 3000);
 
 function getInputValueAndCompare(target) {
     var inputValueOfAnswer = target.value;
@@ -166,10 +132,6 @@ function handleEvents(event) {
     preventNextQuestion(target);
 }
 
-function passToNextQuestion() {
-    paintQuestions();    
-}
-
 function compareAnswers (answerCorrect, answerOfUser){
     if (answerCorrect == answerOfUser) {
         isCorrect();
@@ -179,15 +141,66 @@ function compareAnswers (answerCorrect, answerOfUser){
     }
 }
 function isCorrect() {
-    return  console.log('Correcto');        
+    return console.log('Correcto');        
     
 }
 function isIncorrect() {
     return console.log('Incorrecto!'); 
 }
 
-document.miformulario.addEventListener('click', handleEvents);
-btnNext.addEventListener('click', passToNextQuestion);
+function startApp() {
+    paintQuestions();
+
+    var seconds = 0;
+    timer = null;
+  
+    startTimer();
+
+    function setTimeAndConditions() {
+        seconds++;
+        console.log(seconds);
+        if (btnNext.disabled === true) {
+            console.log('con botón desabilitado');
+            if (questions.length > 0 && seconds > 5) {
+                paintQuestions();
+                seconds = 0;
+            } 
+            if (questions.length === 0) {
+                stopTimer();
+            }
+        }
+    }
+    
+    function startTimer() {
+        if (!timer) {
+            timer = setInterval(setTimeAndConditions, 1000);            
+        }
+    }
+
+    function stopTimer() {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+            seconds = 0;
+        }
+    }
+    if (btnNext.disabled === true) {
+        console.log('hola');
+    }
+
+}
+
+window.onload = function () {
+
+    btnNext.disabled = true;
+
+    startApp();
+   
+    document.miformulario.addEventListener('click', handleEvents);
+    btnNext.addEventListener('click', paintQuestions);
+};
+
+
 
 
 // function recalculateWhenNoAnswer(score, seconds){
@@ -222,8 +235,7 @@ btnNext.addEventListener('click', passToNextQuestion);
     return {
         getQuestionRamdon: getQuestionRamdon,
         paintQuestions: paintQuestions,
-        getInputValueAndCompare: getInputValueAndCompare,
-        passToNextQuestion: passToNextQuestion
+        getInputValueAndCompare: getInputValueAndCompare
         
     };
 })();
