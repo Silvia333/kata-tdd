@@ -1,4 +1,10 @@
 var app = (function (){
+    var questions = [];
+    var questionObtained;
+    var btnNext;
+    var seconds = 0;
+    var timer = null;
+
     function getQuestions(callback) {
     var serverData = [
         {
@@ -77,10 +83,6 @@ var app = (function (){
     callback(serverData);
 }
 
-var questions = [];
-var questionObtained;
-    var btnNext = document.getElementById('btn-next');
-
 getQuestions(function (data) {
     questions = data;
     /*...*/
@@ -148,57 +150,71 @@ function isIncorrect() {
     return console.log('Incorrecto!'); 
 }
 
-function startApp() {
+function goToNextQuestion() {
     paintQuestions();
-
-    var seconds = 0;
-    timer = null;
-  
-    startTimer();
-
-    function setTimeAndConditions() {
-        seconds++;
-        console.log(seconds);
-        if (btnNext.disabled === true) {
-            console.log('con botón desabilitado');
-            if (questions.length > 0 && seconds > 5) {
-                paintQuestions();
-                seconds = 0;
-            } 
-            if (questions.length === 0) {
-                stopTimer();
-            }
-        }
-    }
-    
-    function startTimer() {
-        if (!timer) {
-            timer = setInterval(setTimeAndConditions, 1000);            
-        }
-    }
-
-    function stopTimer() {
-        if (timer) {
-            clearInterval(timer);
-            timer = null;
-            seconds = 0;
-        }
-    }
-    if (btnNext.disabled === true) {
-        console.log('hola');
-    }
-
+    resetAnswerTimer();
 }
 
-window.onload = function () {
+function startTimer() {
+    if (!timer) {
+        timer = setInterval(setTimeAndConditions, 1000);
+    }
+}
 
+function setTimeAndConditions() {
+    seconds++;
+    console.log(seconds);
+    if (btnNext.disabled === true) {
+        console.log('con botón desabilitado');
+        if (questions.length > 0 && seconds > 5) {
+            paintQuestions();
+            resetAnswerTimer();
+        }
+        if (questions.length === 0) {
+            stopTimer();
+        }
+    }
+    // else if (btnNext.disabled === false){
+    //     console.log('con boton habilitado');
+    //     if (questions.length > 0 && seconds < 5) {
+    //         paintQuestions();
+    //         seconds = 0;
+    //     } 
+    //     // else if (questions.length > 0 && seconds < 5) {
+    //     //     return console.log(seconds)
+    //     //     seconds = 0;
+    //     // }
+    // }
+}
+
+function stopTimer() {
+    if (timer) {
+        clearInterval(timer);
+        
+    }
+    timer = null;
+    resetAnswerTimer();
+}
+
+function resetAnswerTimer () {
+    seconds = 0;
+}
+
+function startApp() {
+    btnNext = document.getElementById('btn-next');
     btnNext.disabled = true;
-
-    startApp();
-   
     document.miformulario.addEventListener('click', handleEvents);
-    btnNext.addEventListener('click', paintQuestions);
-};
+    btnNext.addEventListener('click', goToNextQuestion);
+    
+    paintQuestions();
+
+    startTimer();
+
+    
+  
+}
+
+
 
 
 
@@ -235,7 +251,8 @@ window.onload = function () {
     return {
         getQuestionRamdon: getQuestionRamdon,
         paintQuestions: paintQuestions,
-        getInputValueAndCompare: getInputValueAndCompare
+        getInputValueAndCompare: getInputValueAndCompare,
+        startApp: startApp
         
     };
 })();
