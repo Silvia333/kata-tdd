@@ -112,22 +112,22 @@ function paintQuestions () {
     document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
    
 }
+
+function preventNextQuestion(targetRadio) {
+    if (targetRadio.checked) {
+        btnNext.disabled = false;
+    }
+    else {
+        btnNext.disabled = true;
+    }
+}
+
 var inputValueOfAnswer;
 var correctAnswerId;
 function getValuesToCompare(target) {    
     inputValueOfAnswer = target.value;
     correctAnswerId = questionObtained.correctAnswerId;
-    // valuesToCompare = (inputValueOfAnswer, correctAnswerId);
-    // return valuesToCompare;     
-}
 
-function preventNextQuestion (targetRadio) {
-    if (targetRadio.checked) {
-        btnNext.disabled = false;
-    }
-    else{
-        btnNext.disabled = true;
-    }
 }
 
 function handleEventsOfRadios(event) {
@@ -138,24 +138,32 @@ function handleEventsOfRadios(event) {
 
 function compareAnswers (answerCorrect, answerOfUser){
     if (answerCorrect == answerOfUser) {
-        doWhenIsCorrect();
-        recalculateScoreWhenIsCorrect();
+        showMsgWhenIsCorrect();
+        showScore(recalculateScoreWhenIsCorrect);
         return true;      
     }
     if (answerCorrect != answerOfUser) {
-        doWhenIsIncorrect();
+        showMsgWhenIsIncorrect();
+        showScore(recalculateScoreWhenIsIncorrect);
         return false;
     }
 }
-function doWhenIsCorrect() {
-    // recalculateScoreWhenIsCorrect();
+
+//Mensajes que se mostrarán en la interfaz
+function showMsgWhenIsCorrect() {
     return console.log('Correcto!');        
     
 }
-    function doWhenIsIncorrect() {
+
+function showMsgWhenIsIncorrect() {
     return console.log('Incorrecto!'); 
 }
-function recalculateScoreWhenIsCorrect() {
+
+function showScore(myRecalculateFunction) {
+    console.log(`La puntuación es ${myRecalculateFunction(score, seconds)}`);
+}
+
+function recalculateScoreWhenIsCorrect(score, seconds) {
     if (seconds <= 2) {
         return score + 2;
     }
@@ -166,12 +174,18 @@ function recalculateScoreWhenIsCorrect() {
         return score;
     }
 }
+
+function recalculateScoreWhenIsIncorrect(score, seconds) {
+    if (seconds > 10) {
+        return score - 2;
+    }
+    if (seconds <= 10) {
+        return score - 1;
+    }
+}
+
 function goToNextQuestion() {
-    // if (result === true) {
-        
-    //     console.log(`La puntuación es ${score}`);
-    // }
-    console.log(compareAnswers(inputValueOfAnswer, correctAnswerId));
+    compareAnswers(inputValueOfAnswer, correctAnswerId);
     paintQuestions();   
     console.log(seconds)
     resetAnswerTimer();
@@ -243,15 +257,6 @@ function startApp() {
 //     }
 // }
 
-
-// function recalculateScoreWhenIsIncorrect(score, seconds){
-//     if (seconds > 10){
-//         return score - 2;
-//     }
-//     if (seconds <= 10){
-//         return score - 1;
-//     }
-// }
     return {
         getQuestionRamdon: getQuestionRamdon,
         paintQuestions: paintQuestions,
