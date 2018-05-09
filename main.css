@@ -98,6 +98,7 @@ ul{
     color:#fff;
     border:none;
     padding:5px;
+    display:none;
 }
     #enviar:hover{
         background-color:#ddd;
@@ -113,6 +114,7 @@ ul{
     padding:5px;
     border-radius:5px;
     text-decoration:none;
+    display:block;
 }
     #siguiente:hover{
         border-color:#000;

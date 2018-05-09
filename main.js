@@ -307,8 +307,10 @@ var myInterval = setInterval( function(){
         pintarPreguntas();
     }else{
         clearInterval(myInterval);
+        document.getElementById('siguiente').style.display = 'none';
+        document.getElementById('enviar').style.display = 'block';
     }
-}, 20000);
+}, 1000);
 
 
 
@@ -327,8 +329,8 @@ function siguientePregunta(){
     if(esRespuestaCorrecta() === RESPUESTA.VACIA){
        
     }
-
 }
+
 document.getElementById('siguiente').addEventListener('click', siguientePregunta);
 
 //cronometro
