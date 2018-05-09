@@ -160,6 +160,7 @@
 
 //version español
 
+
 function getQuestions(callback) {
     var serverData = [
         {
@@ -244,16 +245,26 @@ getQuestions(function (data) {
     /*...*/
 });
 
-var preguntaObtenida;
+var RESPUESTA = {
+    ACERTADA : 1,
+    FALLIDA : 2,
+    VACIA : 0
+}
 
+
+var preguntaObtenida;
+var segundo = 0;
+var cronometro;
 function getQuestionRamdon(){
     var posicionDeAleatorio = Math.floor(Math.random()* questions.length); 
     var preguntaAdevolver = questions[posicionDeAleatorio];
     questions.splice(posicionDeAleatorio, 1);
     return preguntaAdevolver;
 }
-function pintarPreguntas () {
+function pintarPreguntas() {
     preguntaObtenida = getQuestionRamdon();
+    segundo = 0;
+    cronometro = setInterval (tempo ,983);
     var listaContenedora             = '';
     var tituloDePreguntaObtenida     = preguntaObtenida.question.text;
     var respuestasDePreguntaObtenida = preguntaObtenida.answers;
@@ -268,23 +279,96 @@ function pintarPreguntas () {
 
 pintarPreguntas();
 
+var miRespuestaElegida;
+
+function esRespuestaCorrecta(){
+    miRespuestaElegida = document.miformulario.answers.value;
+    var resultado;
+    if(miRespuestaElegida === ''){
+        resultado = RESPUESTA.VACIA;
+        document.getElementById('mensaje').innerHTML = 'Contesta algo porfi';
+    }else if(parseInt(miRespuestaElegida) === preguntaObtenida.correctAnswerId){
+       resultado = RESPUESTA.ACERTADA;
+       document.getElementById('mensaje').innerHTML = 'Has acertado';
+    }else if(parseInt(miRespuestaElegida) !== preguntaObtenida.correctAnswerId){
+        resultado = RESPUESTA.FALLIDA;
+        document.getElementById('mensaje').innerHTML = 'Has fallado';
+    }
+    return resultado;
+}
+
+
+document.miformulario.addEventListener('change', esRespuestaCorrecta);
+
 var myInterval = setInterval( function(){
+    clearInterval(cronometro);
+   
     if(questions.length > 0){
         pintarPreguntas();
     }else{
         clearInterval(myInterval);
     }
-}, 3000);
+}, 20000);
 
-function comprobarRespuesta(){
-    var miRespuestaElegida = document.miformulario.answers.value;
-    
-    document.getElementById('mensaje').innerHTML = '';
-    if(miRespuestaElegida == preguntaObtenida.correctAnswerId){
-        document.getElementById('mensaje').innerHTML = 'Has acertado';
-    }else{
-        document.getElementById('mensaje').innerHTML = 'Has fallado';
+
+
+function siguientePregunta(){
+    clearInterval(cronometro);
+    clearInterval(myInterval);
+    document.getElementById('mensaje').innerHTML ='';
+    if(esRespuestaCorrecta() === RESPUESTA.ACERTADA){
+       
+        pintarPreguntas();
     }
-  }
+     if(esRespuestaCorrecta() === RESPUESTA.FALLIDA){
 
-document.miformulario.addEventListener('click', comprobarRespuesta);
+        pintarPreguntas();
+    }
+    if(esRespuestaCorrecta() === RESPUESTA.VACIA){
+       
+    }
+
+}
+document.getElementById('siguiente').addEventListener('click', siguientePregunta);
+
+//cronometro
+function tempo() {
+    segundo++;
+  form.cronometro.value = segundo;
+}
+
+// function recalcularNoContesta(puntos, tiempo){
+//     if (tiempo === ''){
+//         return puntos - 2;
+//     }
+//     if (tiempo > 20){
+//         return puntos - 3;
+//     }
+// }
+
+// function recalcularMarcadorAcierto(puntos, tiempo){
+//     if (tiempo <= 2){
+//         return puntos + 2;
+//     }
+//     if (tiempo >= 2 && tiempo < 10){
+//         return ++puntos;
+//     }
+//     if (tiempo > 10){
+//         return puntos;
+//     }
+// }
+
+// function recalcularMarcadorFallo(puntos, tiempo){
+//     if (tiempo > 10){
+//         return puntos - 2;
+//     }
+//     if (tiempo <= 10){
+//         return puntos - 1;
+//     }
+// }
+
+/* 1.- Si pulsamos siguiente detectar check checked y contar el tiempo, en
+ funcion del tiempo if else restando o sumando puntos.
+
+
+ */
