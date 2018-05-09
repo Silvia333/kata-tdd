@@ -99,6 +99,7 @@ function getQuestionRamdon(){
     questions.splice(posicionDeAleatorio, 1);
     return preguntaAdevolver;
 }
+
 function pintarPreguntas() {
     preguntaObtenida = getQuestionRamdon();
     var listaContenedora             = '';
@@ -114,6 +115,10 @@ function pintarPreguntas() {
 }
 
 pintarPreguntas();
+
+function mensajeRespuestas(mensaje){
+    document.getElementById('mensaje').innerHTML = mensaje;
+}
 
 var miRespuestaElegida;
 
@@ -132,90 +137,92 @@ function esRespuestaCorrecta(){
     }
     return resultado;
 }
-function mensajeRespuestas(mensaje){
-    document.getElementById('mensaje').innerHTML = mensaje;
-}
 
-document.miformulario.addEventListener('change', esRespuestaCorrecta);
+document.getElementById('enviar').addEventListener('click', esRespuestaCorrecta);
+    var t; 
+    function reloj() {
+        if(segundos > 9){
+            document.getElementById('displayReloj').innerHTML = segundos;
+        }else{
+            document.getElementById('displayReloj').innerHTML = '0' + segundos;
+        }
+        if(segundos === 20){
+            siguientePregunta();
+        }else{
+            clearTimeout(t);
+            t = setTimeout(function(){
+                reloj();
+            },1000);
+            segundos++;
+        }
+    }
+    reloj();
 
-            var t;
-			function reloj() {
-				if(segundos > 9){
-				    document.getElementById('displayReloj').innerHTML = segundos;
-				}else{
-				    document.getElementById('displayReloj').innerHTML = '0' + segundos;
-				}
-				if(segundos === 20){
-                    alert('Tu tiempo ha terminado'); 
-                    clearInterval(t);
-                    siguientePregunta();
-				}else{
-                    t = setTimeout(function(){
-                        reloj();
-                    },1000);
-                    segundos++;
-                }
-			}
-            reloj();
-
-            
-
+var ok = 0;
+var noOk = 0;
 function siguientePregunta(){
     if(questions.length > 0) {
         if(esRespuestaCorrecta() === RESPUESTA.ACERTADA){
             recalcularMarcadorAcierto();
+            ok++;
+            document.getElementById('ok').innerHTML = ok;
         }
         if(esRespuestaCorrecta() === RESPUESTA.FALLIDA){
             recalcularMarcadorFallo();
+            noOk++;
+            document.getElementById('noOk').innerHTML = noOk;
         }
         if(esRespuestaCorrecta() === RESPUESTA.VACIA){
             recalcularNoContesta();
         }
+        clearTimeout(t);
         pintarPreguntas();
         segundos = 0;
+        mensajeRespuestas( '');
         reloj();
+       
     }else{
-        document.getElementById('enviar').style.display = 'block';
+        document.getElementById('puntos').innerHTML = puntos + ' puntos';
+        document.getElementById('siguiente').style.display = 'none';
     }
 }
 
 document.getElementById('siguiente').addEventListener('click', siguientePregunta);
 
 
-
 function recalcularNoContesta(){
     if (segundos === ''){
         puntos += - 2;
-        console.log('menos 2');
+        console.log(segundos + 'menos 2');
     }
     if (segundos >= 19){
         puntos += - 3;
-        console.log('menos 3');
+        console.log(segundos + 'menos 3');
     }
 }
 
 function recalcularMarcadorAcierto(){
     if (segundos <= 2){
         puntos += + 2;
-        console.log('mas dos')
+        console.log(segundos + 'mas dos')
     }
     if (segundos >= 2 && segundos < 10){
         puntos += 1;
-        console.log('mas uno')
+        console.log(segundos + 'mas uno')
     }
     if (segundos > 10){
         puntos;
-        console.log('0 puntos')
+        console.log(segundos + '0 puntos')
     }
 }
 
 function recalcularMarcadorFallo(){
     if (segundos > 10){
         puntos += - 2;
-        console.log('menos dos puntos')
+        console.log(segundos + 'menos dos puntos')
     }
     if (segundos <= 10){
         puntos += - 1;
-        console.log('menos 1 punto')
+        console.log(segundos + 'menos 1 punto')
     }
 }

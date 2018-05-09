@@ -78,6 +78,9 @@ ul{
     padding: 0 20px;
     text-align:right;
 }
+    .wrapper-marcador h2{
+        margin-bottom: 35px;
+    }
     .wrapper-marcador ul li{
         margin-bottom:20px;
     }
@@ -98,7 +101,6 @@ ul{
     color:#fff;
     border:none;
     padding:5px;
-    display:none;
 }
     #enviar:hover{
         background-color:#ddd;
@@ -128,6 +130,28 @@ ul{
     button:first-child{
         margin-right:5px;
     }
+
+.reloj{
+    background-color: #e30054;
+    position: absolute;
+    top: 50px;
+    right: 30px;
+    padding: 30px;
+    border-radius: 20px;
+}
+#displayReloj{
+    font-size: 56px;
+   
+    color:#fff;
+}
+#mensaje{
+    font-size: 20px;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+    padding: 5px;
+    text-align: center;
+}
+
 
 @media(min-width:768px){
     button{
