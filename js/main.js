@@ -179,7 +179,8 @@ const recalculateScoreWhenIsIncorrect = (score, seconds) => {
 };
 
 const showScore = (myRecalculateFunction) => {
-    console.log(`La puntuación es ${myRecalculateFunction(score, seconds)}`);
+    score = myRecalculateFunction(score, seconds);
+    return console.log(`La puntuación es ${score}`);
 };
 
 const goToNextQuestion = () => {
