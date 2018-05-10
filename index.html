@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,44 +8,57 @@
     <title>Document</title>
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
-        <div class="trivial">
-            <h1>Saber y Ganar</h1>
-            <h5>Responde mejor y más rápido que los demás</h5>
-            <div class="container">  
-                <div class="wrapper-preguntasrespuestas">
-                    <h2 id="preguntas"></h2>
-                    <form name="miformulario" id="respuestas">
-                        <ul id="listaRespuestas"></ul>
-                    </form>
-                    <p id="mensaje"></p>
-                    <div class="botones">
-                        <button type="button" id="enviar" class="floatL">Enviar respuesta</button>
-                        <button type="button" id="siguiente" class="floatL">Siguiente pregunta</button>
-                    </div>
-                    <div class="reloj">
-                        <div id="displayReloj"></div>
-                    </div>
+    <div class="overlay">
+        <button id="iniciar" type="button">Iniciar</button>
+    </div>
+    <div class="trivial">
+        <h1>Saber y Ganar</h1>
+        <h5>Responde mejor y más rápido que los demás</h5>
+        <div class="container">
+            <div class="wrapper-preguntasrespuestas">
+                <h2 id="preguntas"></h2>
+                <form name="miformulario" id="respuestas">
+                    <ul id="listaRespuestas"></ul>
+                </form>
+                <p id="mensaje"></p>
+                <div class="botones">
+                    <button type="button" id="enviar" class="floatL">Enviar respuesta</button>
+                    <button type="button" id="siguiente" class="floatL">Siguiente pregunta</button>
                 </div>
-                <div class="wrapper-marcador">
-                    <h2>Marcador</h2>
-                    <ul>
-                        <li>Silvia : <span id="puntos"></span></li>
-                    </ul>
+                <div class="reloj">
+                    <div id="displayReloj"></div>
                 </div>
             </div>
-            <div class="container">
-                <div class="wrapper-estadisticas">
-                    <h2>Estadísticas</h2>
-                    <ul>
-                        <li>Velocidad promedio respondiendo: <span id="promedio" class="promedio">7 segundos</span></li>
-                        <li>Preguntas acertadas: <span id="ok" class="ok">0</span></li>
-                        <li>Preguntas fallidas: <span id="noOk" class="noOk">0</span></li>
-                    </ul>
-                </div>
+            <div class="wrapper-marcador">
+                <h2>Marcador</h2>
+                <ul>
+                    <li>Silvia :
+                        <span id="puntos"></span>
+                    </li>
+                </ul>
             </div>
         </div>
+        <div class="container">
+            <div class="wrapper-estadisticas">
+                <h2>Estadísticas</h2>
+                <ul>
+                    <li>Velocidad promedio respondiendo:
+                        <span id="promedio" class="promedio">7 segundos</span>
+                    </li>
+                    <li>Preguntas acertadas:
+                        <span id="ok" class="ok">0</span>
+                    </li>
+                    <li>Preguntas fallidas:
+                        <span id="noOk" class="noOk">0</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-            <script src="main.js"></script>
+    <script src="main.js"></script>
 </body>
+
 </html>
