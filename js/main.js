@@ -90,22 +90,30 @@ const app = (function (){
     const getQuestionRamdon = () => {
         const randomPosition = Math.floor(Math.random()* questions.length);
         let questionToGet = questions[randomPosition];
-        questions.splice(randomPosition, 1);
+        updateQuestionsArray(randomPosition);
         return questionToGet;
     };
 
-    const paintQuestions = () => {
+    const giveQuestionObtained = () => {
         questionObtained = getQuestionRamdon();
+        return questionObtained;
+    };
+
+    const updateQuestionsArray = (randomPosition) => {
+        questions.splice(randomPosition, 1);
+    };
+
+    const paintQuestions = (questionObtained) => {
         const titleOfQuestionObtained = questionObtained.question.text;
-        const anwersOfQuestionObtained = questionObtained.answers;
+        const answersOfQuestionObtained = questionObtained.answers;
         const idOfQuestionObtained = questionObtained.question.id;
         let listOfAnswersContainer = '';
 
         document.getElementById('question__title').innerHTML = titleOfQuestionObtained;
-        for (var i = 0; i < anwersOfQuestionObtained.length; i++) {
+        for (var i = 0; i < answersOfQuestionObtained.length; i++) {
             var itemListDefinition = 
                 `<li>
-                    <input id="item-${i}" name="answers" type="radio" required value="${anwersOfQuestionObtained[i].id}" >${anwersOfQuestionObtained[i].text}
+                    <input id="item-${i}" name="answers" type="radio" required value="${answersOfQuestionObtained[i].id}" >${answersOfQuestionObtained[i].text}
                 </li>`;
             listOfAnswersContainer += itemListDefinition;
         
@@ -114,9 +122,33 @@ const app = (function (){
     
     };
 
-    const changeTextWhenNoMoreQuestions = () => {
+    const changeUIWhenNoMoreQuestions = () => {
         document.querySelector('.trivial').classList.add('hide');
         document.querySelector('.btn--next').classList.add('hide');
+    };
+
+    const compareAnswers = (answerCorrect, answerOfUser) => {
+        if (answerCorrect == answerOfUser) {
+            return true;      
+        }
+        if (answerCorrect != answerOfUser) {            
+            return false;
+        }
+    };
+
+    const getValuesToCompare = (target) => {    
+        inputValueOfAnswer = target.value;
+        correctAnswerId = questionObtained.correctAnswerId;
+    };
+
+    const getResultOfComparation = () => {
+        if(compareAnswers(inputValueOfAnswer, correctAnswerId)) {
+            showMsgWhenIsCorrect();
+            showScore(recalculateScoreWhenIsCorrect);
+        } else if (!compareAnswers(inputValueOfAnswer, correctAnswerId)) {
+            showMsgWhenIsIncorrect();
+            showScore(recalculateScoreWhenIsIncorrect);
+        }      
     };
 
     const preventNextQuestion = (targetRadio) => {
@@ -128,29 +160,10 @@ const app = (function (){
         }
     };
 
-    const getValuesToCompare = (target) => {    
-        inputValueOfAnswer = target.value;
-        correctAnswerId = questionObtained.correctAnswerId;
-
-    };
-
     const handleEventsOfRadios = (event) => {
         const target = event.target;
         getValuesToCompare(target);
         preventNextQuestion(target);
-    };
-
-    const compareAnswers = (answerCorrect, answerOfUser) => {
-        if (answerCorrect == answerOfUser) {
-            showMsgWhenIsCorrect();
-            showScore(recalculateScoreWhenIsCorrect);
-            return true;      
-        }
-        if (answerCorrect != answerOfUser) {
-            showMsgWhenIsIncorrect();
-            showScore(recalculateScoreWhenIsIncorrect);
-            return false;
-        }
     };
 
     //Mensajes que se mostrarán en la interfaz
@@ -188,17 +201,20 @@ const app = (function (){
         return console.log(`La puntuación es ${score}`);
     };
 
-    const doBeforeNextQuestion = () => {
-        compareAnswers(inputValueOfAnswer, correctAnswerId);
+    const updateUI = () => {
         if (questions.length > 0) {
-            paintQuestions();
+            paintQuestions(giveQuestionObtained());
         } else {
-            changeTextWhenNoMoreQuestions();
-            stopTimer();        
+            changeUIWhenNoMoreQuestions();
         }
-        console.log(`Tiempo transcurrido ${seconds} segundos`);
-        resetAnswerTimer();
         btnNext.disabled = true;
+        console.log(`Tiempo transcurrido ${seconds} segundos`);
+    };
+
+    const doBeforeNextQuestion = () => {
+        getResultOfComparation();
+        updateUI();
+        resetAnswerTimer();
     };
 
     const goToNextQuestion = () => {
@@ -214,16 +230,16 @@ const app = (function (){
 
     const setTimeAndConditions = () => {
         seconds++;
+        console.log(seconds);
         if (btnNext.disabled === true) {
             if (questions.length > 0 && seconds > 5) {
                 showScore(recalculateScoreWhenNoAnswer);
-                paintQuestions();
+                paintQuestions(giveQuestionObtained());
                 resetAnswerTimer();
             }
-            if (questions.length === 0) {
-                showScore(recalculateScoreWhenNoAnswer);
+            else if (questions.length === 0 && seconds > 5) {
                 stopTimer();
-                changeTextWhenNoMoreQuestions();
+                changeUIWhenNoMoreQuestions();
             }
         }
     };
@@ -256,7 +272,7 @@ const app = (function (){
             startTimer();
         });
         
-        paintQuestions();        
+        paintQuestions(giveQuestionObtained());        
     };
 
     return {
