@@ -89,13 +89,10 @@ var appTrivial = (function () {
         FALLIDA: 2,
         VACIA: 0
     };
-    var preguntaObtenida;
-    var segundos = 0;
-    var puntos = 0;
-    var miRespuestaElegida;
-    var ok = 0;
-    var noOk = 0;
-    var t;
+    var preguntaObtenida, 
+        segundos = 0, puntos = 0, 
+        miRespuestaElegida, numeroPreguntasOk = 0, 
+        numeroPreguntasNoOk = 0, tiempo, promedio;
 
     function getQuestionRamdon() {
         var posicionDeAleatorio = Math.floor(Math.random() * questions.length);
@@ -147,8 +144,8 @@ var appTrivial = (function () {
         if (segundos === 20) {
             siguientePregunta();
         } else {
-            clearTimeout(t);
-            t = setTimeout(function () {
+            clearTimeout(tiempo);
+            tiempo = setTimeout(function () {
                 reloj();
             }, 1000);
             segundos++;
@@ -158,17 +155,17 @@ var appTrivial = (function () {
     function siguientePregunta() {
         if (esRespuestaCorrecta() === RESPUESTA.ACERTADA) {
             recalcularMarcadorAcierto();
-            document.getElementById('ok').innerHTML = ++ok;
+            document.getElementById('ok').innerHTML = ++numeroPreguntasOk;
         }
         if (esRespuestaCorrecta() === RESPUESTA.FALLIDA) {
             recalcularMarcadorFallo();
-            document.getElementById('noOk').innerHTML = ++noOk;
+            document.getElementById('noOk').innerHTML = ++numeroPreguntasNoOk;
         }
         if (esRespuestaCorrecta() === RESPUESTA.VACIA) {
             recalcularNoContesta();
         }
         if (questions.length > 0) {
-            clearTimeout(t);
+            clearTimeout(tiempo);
             pintarPregunta();
             segundos = 0;
             mensajeRespuestas('');
@@ -176,14 +173,11 @@ var appTrivial = (function () {
         } else {
             document.getElementById('puntos').innerHTML = puntos + ' puntos';
             document.getElementById('siguiente').style.display = 'none';
+            clearTimeout(tiempo);
         }
     }
 
     function recalcularNoContesta() {
-        if (segundos === '') {
-            puntos += - 2;
-            console.log(segundos + 'menos 2');
-        }
         if (segundos >= 19) {
             puntos += - 3;
             console.log(segundos + 'menos 3');

@@ -1,3 +1,5 @@
+
+/* Intro Trivial */
 .overlay{
     position:absolute;
     top:0;
@@ -7,6 +9,41 @@
     background: #000;
     z-index:1000;
 }
+
+.introTrivial{
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    border: 3px solid #e30054;
+}
+    .introTrivial h1{
+        text-align: left;
+        margin-bottom: 20px;
+        font-size: 30px;
+        color: #fff;
+        font-size: 28px;
+        font-family: arial;
+        margin-top: 0;
+    }
+    .bloqueImg{
+        overflow:hidden;
+        clear:both;
+    }
+    .introTrivial #iniciar{
+        border-radius: 5px;
+        background: #e30054;
+        font-size: 17px;
+        color: #fff;
+        border: 1px solid #fff;
+        margin: 0 auto;
+        display: block;
+    }
+/****************** fin inicio Trivial ***********************/
 
 .trivial{
    margin:0 auto;
@@ -42,6 +79,9 @@ ul{
 }
 .floatL{
     float:left;
+}
+.floatR{
+    float:right;
 }
 .promedio{
     background-color:green;
