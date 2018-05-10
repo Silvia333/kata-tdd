@@ -82,7 +82,7 @@ const app = (function (){
                         ],
                 correctAnswerId: 9
             },
-        ]
+        ];
         callback(serverData);
     };
 
@@ -105,7 +105,7 @@ const app = (function (){
         const idOfQuestionObtained = questionObtained.question.id;
         let listOfAnswersContainer = '';
 
-        document.getElementById('preguntas').innerHTML = titleOfQuestionObtained;
+        document.getElementById('question__title').innerHTML = titleOfQuestionObtained;
         for (var i = 0; i < anwersOfQuestionObtained.length; i++) {
             var itemListDefinition = 
                 `<li>
@@ -114,7 +114,7 @@ const app = (function (){
             listOfAnswersContainer += itemListDefinition;
         
         }
-        document.getElementById('listaRespuestas').innerHTML = listOfAnswersContainer;
+        document.getElementById('answers-list').innerHTML = listOfAnswersContainer;
     
     };
 
@@ -135,13 +135,13 @@ const app = (function (){
         inputValueOfAnswer = target.value;
         correctAnswerId = questionObtained.correctAnswerId;
 
-    }
+    };
 
     const handleEventsOfRadios = (event) => {
         const target = event.target;
         getValuesToCompare(target);
         preventNextQuestion(target);
-    }
+    };
 
     const compareAnswers = (answerCorrect, answerOfUser) => {
         if (answerCorrect == answerOfUser) {
@@ -154,7 +154,7 @@ const app = (function (){
             showScore(recalculateScoreWhenIsIncorrect);
             return false;
         }
-    }
+    };
 
     //Mensajes que se mostrarán en la interfaz
     const showMsgWhenIsCorrect = () => console.log('Correcto!');     
@@ -199,7 +199,7 @@ const app = (function (){
             changeTextWhenNoMoreQuestions();
             stopTimer();        
         }
-        console.log(`Tiempo transcurrido ${seconds} segundos`)
+        console.log(`Tiempo transcurrido ${seconds} segundos`);
         resetAnswerTimer();
     };
 
@@ -212,7 +212,7 @@ const app = (function (){
         if (!timer) {
             timer = setInterval(setTimeAndConditions, 1000);
         }
-    }
+    };
 
     const setTimeAndConditions = () => {
         seconds++;
@@ -228,7 +228,7 @@ const app = (function (){
                 changeTextWhenNoMoreQuestions();
             }
         }
-    }
+    };
 
     const stopTimer = () => {
         if (timer) {
@@ -236,22 +236,22 @@ const app = (function (){
         }
         timer = null;
         resetAnswerTimer();
-    }
+    };
 
     const resetAnswerTimer = () => {
         seconds = 0;
-    }
+    };
 
     const startApp = () => {
         btnNext = document.getElementById('btn-next');
         btnNext.disabled = true;
-        document.miformulario.addEventListener('click', handleEventsOfRadios);
+        document.form__container.addEventListener('click', handleEventsOfRadios);
         btnNext.addEventListener('click', goToNextQuestion);
         
         paintQuestions();
 
         startTimer();
-    }
+    };
 
     return {
         getQuestionRamdon: getQuestionRamdon,
