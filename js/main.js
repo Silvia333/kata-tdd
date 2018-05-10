@@ -5,6 +5,8 @@ const app = (function (){
     let seconds = 0;
     let timer = null;
     let score = 0;
+    let inputValueOfAnswer;
+    let correctAnswerId;
 
     const getQuestions = callback => {
         const serverData = [
@@ -116,6 +118,10 @@ const app = (function (){
     
     };
 
+    const changeTextWhenNoMoreQuestions = () => {
+        document.querySelector('.trivial').classList.add('hide');
+    };
+
     const preventNextQuestion = (targetRadio) => {
         if (targetRadio.checked) {
             btnNext.disabled = false;
@@ -125,119 +131,121 @@ const app = (function (){
         }
     };
 
-let inputValueOfAnswer;
-let correctAnswerId;
-const getValuesToCompare = (target) => {    
-    inputValueOfAnswer = target.value;
-    correctAnswerId = questionObtained.correctAnswerId;
+    const getValuesToCompare = (target) => {    
+        inputValueOfAnswer = target.value;
+        correctAnswerId = questionObtained.correctAnswerId;
 
-}
-
-const handleEventsOfRadios = (event) => {
-    const target = event.target;
-    getValuesToCompare(target);
-    preventNextQuestion(target);
-}
-
-const compareAnswers = (answerCorrect, answerOfUser) => {
-    if (answerCorrect == answerOfUser) {
-        showMsgWhenIsCorrect();
-        showScore(recalculateScoreWhenIsCorrect);
-        return true;      
     }
-    if (answerCorrect != answerOfUser) {
-        showMsgWhenIsIncorrect();
-        showScore(recalculateScoreWhenIsIncorrect);
-        return false;
+
+    const handleEventsOfRadios = (event) => {
+        const target = event.target;
+        getValuesToCompare(target);
+        preventNextQuestion(target);
     }
-}
 
-//Mensajes que se mostrarán en la interfaz
-const showMsgWhenIsCorrect = () => console.log('Correcto!');     
-
-const showMsgWhenIsIncorrect = () => console.log('Incorrecto!'); 
-
-const recalculateScoreWhenIsCorrect = (score, seconds) => {
-    if (seconds <= 2) {
-        return score + 2;
+    const compareAnswers = (answerCorrect, answerOfUser) => {
+        if (answerCorrect == answerOfUser) {
+            showMsgWhenIsCorrect();
+            showScore(recalculateScoreWhenIsCorrect);
+            return true;      
+        }
+        if (answerCorrect != answerOfUser) {
+            showMsgWhenIsIncorrect();
+            showScore(recalculateScoreWhenIsIncorrect);
+            return false;
+        }
     }
-    if (seconds <= 10) {
-        return score + 1;
-    }
-    if (seconds > 10) {
-        return score;
-    }
-};
 
-const recalculateScoreWhenIsIncorrect = (score, seconds) => {
-    if (seconds > 10) {
-        return score - 2;
-    }
-    if (seconds <= 10) {
-        return score - 1;
-    }
-};
+    //Mensajes que se mostrarán en la interfaz
+    const showMsgWhenIsCorrect = () => console.log('Correcto!');     
 
-const showScore = (myRecalculateFunction) => {
-    score = myRecalculateFunction(score, seconds);
-    return console.log(`La puntuación es ${score}`);
-};
+    const showMsgWhenIsIncorrect = () => console.log('Incorrecto!'); 
 
-const goToNextQuestion = () => {
-    compareAnswers(inputValueOfAnswer, correctAnswerId);
-    paintQuestions();   
-    console.log(`Tiempo transcurrido ${seconds} segundos`)
-    resetAnswerTimer();
-};
+    const recalculateScoreWhenIsCorrect = (score, seconds) => {
+        if (seconds <= 2) {
+            return score + 2;
+        }
+        if (seconds <= 10) {
+            return score + 1;
+        }
+        if (seconds > 10) {
+            return score;
+        }
+    };
 
-//De momento no la uso
-const getAnswerTime = () => {
-    console.log(seconds);
-    return seconds;
-}
+    const recalculateScoreWhenIsIncorrect = (score, seconds) => {
+        if (seconds > 10) {
+            return score - 2;
+        }
+        if (seconds <= 10) {
+            return score - 1;
+        }
+    };
 
-//Funciones de temporizador
-const startTimer = () => {
-    if (!timer) {
-        timer = setInterval(setTimeAndConditions, 1000);
-    }
-}
+    const showScore = (myRecalculateFunction) => {
+        score = myRecalculateFunction(score, seconds);
+        return console.log(`La puntuación es ${score}`);
+    };
 
-const setTimeAndConditions = () => {
-    seconds++;
-    if (btnNext.disabled === true) {
-        if (questions.length > 0 && seconds > 5) {
+    const doBeforeNextQuestion = () => {
+        compareAnswers(inputValueOfAnswer, correctAnswerId);
+        if (questions.length > 0) {
             paintQuestions();
-            resetAnswerTimer();
+        } else {
+            changeTextWhenNoMoreQuestions();
+            stopTimer();        
         }
-        if (questions.length === 0) {
-            stopTimer();
+        console.log(`Tiempo transcurrido ${seconds} segundos`)
+        resetAnswerTimer();
+    };
+
+    const goToNextQuestion = () => {
+    doBeforeNextQuestion();
+    };
+
+    //Funciones de temporizador
+    const startTimer = () => {
+        if (!timer) {
+            timer = setInterval(setTimeAndConditions, 1000);
         }
     }
-}
 
-const stopTimer = () => {
-    if (timer) {
-        clearInterval(timer);        
+    const setTimeAndConditions = () => {
+        seconds++;
+        if (btnNext.disabled === true) {
+            if (questions.length > 0 && seconds > 5) {
+                paintQuestions();
+                resetAnswerTimer();
+            }
+            if (questions.length === 0) {
+                stopTimer();
+                changeTextWhenNoMoreQuestions();
+            }
+        }
     }
-    timer = null;
-    resetAnswerTimer();
-}
 
-const resetAnswerTimer = () => {
-    seconds = 0;
-}
+    const stopTimer = () => {
+        if (timer) {
+            clearInterval(timer);        
+        }
+        timer = null;
+        resetAnswerTimer();
+    }
 
-const startApp = () => {
-    btnNext = document.getElementById('btn-next');
-    btnNext.disabled = true;
-    document.miformulario.addEventListener('click', handleEventsOfRadios);
-    btnNext.addEventListener('click', goToNextQuestion);
-    
-    paintQuestions();
+    const resetAnswerTimer = () => {
+        seconds = 0;
+    }
 
-    startTimer();
-}
+    const startApp = () => {
+        btnNext = document.getElementById('btn-next');
+        btnNext.disabled = true;
+        document.miformulario.addEventListener('click', handleEventsOfRadios);
+        btnNext.addEventListener('click', goToNextQuestion);
+        
+        paintQuestions();
+
+        startTimer();
+    }
 
 // function recalculateWhenNoAnswer(score, seconds){
 //     if (seconds === ''){
