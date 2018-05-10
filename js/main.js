@@ -228,6 +228,9 @@ const app = (function (){
         }
     };
 
+    //Refactorizar
+    //timer = setInterval(function () {setTimeAndConditions(paintQuestions);}, 1000);
+
     const setTimeAndConditions = () => {
         seconds++;
         console.log(seconds);
@@ -243,6 +246,10 @@ const app = (function (){
             }
         }
     };
+
+    const updateCountdown = () => {
+        
+    }
 
     const stopTimer = () => {
         if (timer) {
