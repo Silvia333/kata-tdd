@@ -80,10 +80,6 @@ var appTrivial = (function () {
         callback(serverData);
     }
     var questions = [];
-    getQuestions(function (data) {
-        questions = data;
-    });
-
     var RESPUESTA = {
         ACERTADA: 1,
         FALLIDA: 2,
@@ -211,6 +207,9 @@ var appTrivial = (function () {
     }
 
     function iniciar() {
+        getQuestions(function (data) {
+            questions = data;
+        });
         pintarPregunta();
         reloj();
         document.getElementById('enviar').addEventListener('click', esRespuestaCorrecta);
