@@ -182,6 +182,10 @@ const app = (function (){
         }
     };
 
+    const recalculateScoreWhenNoAnswer = (score) => {
+        return score - 3;
+    };
+
     const showScore = (myRecalculateFunction) => {
         score = myRecalculateFunction(score, seconds);
         return console.log(`La puntuación es ${score}`);
@@ -214,10 +218,12 @@ const app = (function (){
         seconds++;
         if (btnNext.disabled === true) {
             if (questions.length > 0 && seconds > 5) {
+                showScore(recalculateScoreWhenNoAnswer);
                 paintQuestions();
                 resetAnswerTimer();
             }
             if (questions.length === 0) {
+                showScore(recalculateScoreWhenNoAnswer);
                 stopTimer();
                 changeTextWhenNoMoreQuestions();
             }
@@ -247,21 +253,11 @@ const app = (function (){
         startTimer();
     }
 
-// function recalculateWhenNoAnswer(score, seconds){
-//     if (seconds === ''){
-//         return score - 2;
-//     }
-//     if (seconds > 20){
-//         return score - 3;
-//     }
-// }
-
     return {
         getQuestionRamdon: getQuestionRamdon,
         paintQuestions: paintQuestions,
         getInputValueAndCompare: getValuesToCompare,
-        startApp: startApp
-        
+        startApp: startApp        
     };
 })();
 
