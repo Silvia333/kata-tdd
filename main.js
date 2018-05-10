@@ -225,7 +225,7 @@ var appTrivial = (function () {
 
 document.getElementById('iniciar').addEventListener('click', function(){
     document.getElementsByClassName('overlay')[0].style.display = 'none';
-    var jugador = document.getElementsByClassName('nombrejugador')[0].value;
-    document.getElementById('jugador').innerHTML = jugador;
+    // var jugador = document.getElementsByClassName('nombrejugador')[0].value;
+    // document.getElementById('jugador').innerHTML = jugador;
     appTrivial.iniciar();
 });
