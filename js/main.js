@@ -2,9 +2,10 @@ const app = (function (){
     let questions = [];
     let questionObtained;
     let btnNext;
-    let seconds = 0;
-    let timer = null;
-    let score = 0;
+    let btnSend;
+    let seconds;
+    let timer;
+    let score;
     let inputValueOfAnswer;
     let correctAnswerId;
 
@@ -86,11 +87,6 @@ const app = (function (){
         callback(serverData);
     };
 
-    getQuestions(function (data) {
-        questions = data;
-        /*...*/
-    });
-
     const getQuestionRamdon = () => {
         const randomPosition = Math.floor(Math.random()* questions.length);
         let questionToGet = questions[randomPosition];
@@ -120,6 +116,7 @@ const app = (function (){
 
     const changeTextWhenNoMoreQuestions = () => {
         document.querySelector('.trivial').classList.add('hide');
+        document.querySelector('.btn--next').classList.add('hide');
     };
 
     const preventNextQuestion = (targetRadio) => {
@@ -201,6 +198,7 @@ const app = (function (){
         }
         console.log(`Tiempo transcurrido ${seconds} segundos`);
         resetAnswerTimer();
+        btnNext.disabled = true;
     };
 
     const goToNextQuestion = () => {
@@ -243,22 +241,30 @@ const app = (function (){
     };
 
     const startApp = () => {
+        seconds = 0;
+        timer = null;
+        score = 0;
         btnNext = document.getElementById('btn-next');
         btnNext.disabled = true;
-        document.form__container.addEventListener('click', handleEventsOfRadios);
         btnNext.addEventListener('click', goToNextQuestion);
+        btnSend = document.getElementById('btn-send');        
+        btnSend.disabled = true;
+        document.form__container.addEventListener('click', handleEventsOfRadios);
         
-        paintQuestions();
-
-        startTimer();
+        getQuestions(function (data) {
+            questions = data;
+            startTimer();
+        });
+        
+        paintQuestions();        
     };
 
     return {
         getQuestionRamdon: getQuestionRamdon,
         paintQuestions: paintQuestions,
         getInputValueAndCompare: getValuesToCompare,
-        startApp: startApp        
+        startApp       
     };
-})();
+});
 
 

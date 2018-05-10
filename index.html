@@ -8,20 +8,23 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div class="trivial" style="border:1px solid red">
-        <h2 id="question__title" style="text-align:center; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif"></h2>
-        <form name="form__container" id="form_answers-container">
-            <ul id="answers-list"></ul>
-            <button type="button" id="btn-next">Siguiente</button>
-        </form>
-        <p class="message--result"></p>
+    <div style="border:1px solid red">
+        <div class="trivial">
+            <form name="form__container" id="form_answers-container">
+                <h2 id="question__title" style="text-align:center; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif"></h2>
+                <ul id="answers-list"></ul>          
+            </form>
+            <p class="message--result"></p>
+        </div>
+        <button type="button" id="btn-send">Enviar resultados</button>
+        <button type="button" id="btn-next" class="btn--next">Siguiente pregunta</button>
     </div>
 
     <script src="js/main.js">
     
     </script>
     <script>
-        window.onload = app.startApp;
+        window.onload = app().startApp;
     </script>
 </body>
 </html>
