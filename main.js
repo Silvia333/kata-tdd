@@ -88,7 +88,7 @@ var appTrivial = (function () {
     var preguntaObtenida, 
         segundos = 0, puntos = 0, 
         miRespuestaElegida, numeroPreguntasOk = 0, 
-        numeroPreguntasNoOk = 0, tiempo, promedio;
+        numeroPreguntasNoOk = 0, tiempo, promedio = 0, totalQuestions;
 
     function getQuestionRamdon() {
         var posicionDeAleatorio = Math.floor(Math.random() * questions.length);
@@ -110,28 +110,7 @@ var appTrivial = (function () {
         }
         document.getElementById('listaRespuestas').innerHTML = listaContenedora;
     }
-
-    function mensajeRespuestas(mensaje) {
-        document.getElementById('mensaje').innerHTML = mensaje;
-    }
-
-    function esRespuestaCorrecta() {
-        miRespuestaElegida = document.miformulario.answers.value;
-        var resultado;
-        if (miRespuestaElegida === '') {
-            resultado = RESPUESTA.VACIA;
-            mensajeRespuestas('Contesta algo porfi');
-        } else if (parseInt(miRespuestaElegida) === preguntaObtenida.correctAnswerId) {
-            resultado = RESPUESTA.ACERTADA;
-            mensajeRespuestas('Has acertado');
-        } else if (parseInt(miRespuestaElegida) !== preguntaObtenida.correctAnswerId) {
-            resultado = RESPUESTA.FALLIDA;
-            mensajeRespuestas('Has fallado');
-        }
-        return resultado;
-    }
-
-    function reloj() {
+    function cronometro() {
         if (segundos > 9) {
             document.getElementById('displayReloj').innerHTML = segundos;
         } else {
@@ -142,45 +121,95 @@ var appTrivial = (function () {
         } else {
             clearTimeout(tiempo);
             tiempo = setTimeout(function () {
-                reloj();
+                cronometro();
             }, 1000);
             segundos++;
         }
     }
 
     function siguientePregunta() {
-        if (esRespuestaCorrecta() === RESPUESTA.ACERTADA) {
-            recalcularMarcadorAcierto();
-            document.getElementById('ok').innerHTML = ++numeroPreguntasOk;
-        }
-        if (esRespuestaCorrecta() === RESPUESTA.FALLIDA) {
-            recalcularMarcadorFallo();
-            document.getElementById('noOk').innerHTML = ++numeroPreguntasNoOk;
-        }
-        if (esRespuestaCorrecta() === RESPUESTA.VACIA) {
-            recalcularNoContesta();
-        }
         if (questions.length > 0) {
             clearTimeout(tiempo);
             pintarPregunta();
+            promedio += parseInt(segundos);
             segundos = 0;
-            mensajeRespuestas('');
-            reloj();
+            pintarMensaje('');
+            cronometro();
         } else {
-            document.getElementById('puntos').innerHTML = puntos + ' puntos';
+            mostrarMarcador();
             document.getElementById('siguiente').style.display = 'none';
             clearTimeout(tiempo);
+            mostrarPromedio();
+        }
+    }
+    function mostrarPromedio(){
+        promedio = promedio / totalQuestions;
+        document.getElementsByClassName('promedio')[0].innerHTML = promedio + ' segundos';
+    }
+    function mostrarMarcador(){
+            document.getElementById('puntos').innerHTML = puntos + ' puntos';
+    }
+
+    function esRespuestaCorrecta(){
+        miRespuestaElegida = document.miformulario.answers.value;
+        var resultado;
+        if (miRespuestaElegida === '') {
+            resultado = RESPUESTA.VACIA;
+        } else if (parseInt(miRespuestaElegida) === preguntaObtenida.correctAnswerId) {
+            resultado = RESPUESTA.ACERTADA;
+        } else if (parseInt(miRespuestaElegida) !== preguntaObtenida.correctAnswerId) {
+            resultado = RESPUESTA.FALLIDA;
+        }
+        return resultado;
+    }
+
+    function actualizarUI() {
+        miRespuestaElegida = document.miformulario.answers.value;
+        var resultado;
+        if (miRespuestaElegida === '') {
+            resultado = RESPUESTA.VACIA;
+            pintarMensaje('No has contestado');
+        } else if (parseInt(miRespuestaElegida) === preguntaObtenida.correctAnswerId) {
+            resultado = RESPUESTA.ACERTADA;
+            pintarMensaje('Has acertado');
+            pintarPuntos(true);
+        } else if (parseInt(miRespuestaElegida) !== preguntaObtenida.correctAnswerId) {
+            resultado = RESPUESTA.FALLIDA;
+            pintarMensaje('Has fallado');
+            pintarPuntos(false);
+        }
+        return resultado;
+    }
+    function pintarMensaje(mensaje) {
+        document.getElementById('mensaje').innerHTML = mensaje;
+    }
+
+    function pintarPuntos(acierto){
+        if(acierto){
+            document.getElementById('ok').innerHTML = ++numeroPreguntasOk;
+        }else{
+            document.getElementById('noOk').innerHTML = ++numeroPreguntasNoOk;
         }
     }
 
-    function recalcularNoContesta() {
+    function calcularPuntos(){
+        if (esRespuestaCorrecta() === RESPUESTA.ACERTADA) {
+            puntosSiAcierto();
+        }
+        if (esRespuestaCorrecta() === RESPUESTA.FALLIDA) {
+            puntosSiFallo();
+        }
+        if (esRespuestaCorrecta() === RESPUESTA.VACIA) {
+            puntosSiNoContesta();
+        }
+    }
+    function puntosSiNoContesta() {
         if (segundos >= 19) {
             puntos += - 3;
             console.log(segundos + 'menos 3');
         }
     }
-
-    function recalcularMarcadorAcierto() {
+    function puntosSiAcierto() {
         if (segundos <= 2) {
             puntos += + 2;
             console.log(segundos + 'mas dos')
@@ -194,8 +223,7 @@ var appTrivial = (function () {
             console.log(segundos + '0 puntos')
         }
     }
-
-    function recalcularMarcadorFallo() {
+    function puntosSiFallo() {
         if (segundos > 10) {
             puntos += - 2;
             console.log(segundos + 'menos dos puntos')
@@ -206,14 +234,28 @@ var appTrivial = (function () {
         }
     }
 
+    function pintarJugador(){
+        var jugador = document.getElementsByClassName('nombrejugador')[0].value; 
+        localStorage.setItem(jugador);
+    }
+    function onCheck(){
+        actualizarUI();
+    }
+
+    function onNextQuestion(){
+        calcularPuntos();
+        siguientePregunta();
+    }
+
     function iniciar() {
         getQuestions(function (data) {
             questions = data;
+            totalQuestions = data.length;
         });
         pintarPregunta();
-        reloj();
-        document.getElementById('enviar').addEventListener('click', esRespuestaCorrecta);
-        document.getElementById('siguiente').addEventListener('click', siguientePregunta);
+        cronometro();
+        document.getElementById('enviar').addEventListener('click', onCheck);
+        document.getElementById('siguiente').addEventListener('click', onNextQuestion);
     }
 
     return {
