@@ -15,11 +15,11 @@
             <h1 class="floatL">Kata de Velocidad</h1>
             <h2 class="floatR">Level 0</h2>
             <form name="inscripcion">
-                    <label>
-                        Nombre del Jugador:
-                    </label>
-                    <input type="text" class="nombrejugador" value="" placeholder="Nombre del jugador">
-                </form>
+                <label>
+                    Nombre del Jugador:
+                </label>
+                <input type="text" id="nombrejugador" value="" placeholder="Nombre del jugador">
+            </form>
             <div class="bloqueImg">
                 <img src="saberyganar2.jpeg" alt="Saber y Ganar" class="floatL">
                 <img src="ninja.png" alt="ninja" class="floatR">
@@ -48,7 +48,7 @@
             <div class="wrapper-marcador">
                 <h2>Marcador</h2>
                 <ul>
-                    <li id="jugador">Silvia: 
+                    <li id="marcadorjugador">Silvia: 
                         <span id="puntos"></span>
                     </li>
                 </ul>
@@ -73,6 +73,7 @@
     </div>
 
     <script src="main.js"></script>
+    <script>appTrivial.iniciar()</script>
 </body>
 
 </html>
