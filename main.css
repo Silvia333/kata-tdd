@@ -33,6 +33,7 @@
     .bloqueImg{
         overflow:hidden;
         clear:both;
+        margin-bottom: 20px;
     }
     .introTrivial #iniciar{
         border-radius: 5px;
@@ -56,6 +57,8 @@
         display: table-cell;
         text-align: right;
         vertical-align: middle;
+        display:block;
+        margin-bottom: 3px;
     }
     .introTrivial input{
         font-size: 12px;

@@ -78,20 +78,19 @@ var appTrivial = (function () {
 
         callback(serverData);
     }
-
-    var questions = [];
-    var preguntaObtenida, nombreJugador,
-        segundos = 0, puntos = 0, 
-        miRespuestaElegida, numeroPreguntasOk = 0, 
-        numeroPreguntasNoOk = 0, tiempo, promedio = 0, totalQuestions;
+    
+    var preguntaObtenida, nombreJugador, questions = [],
+    segundos = 0, puntos = 0,
+    miRespuestaElegida, numeroPreguntasOk = 0, numeroPreguntasNoOk = 0, tiempo,
+    promedio = 0, totalQuestions;
 
     function getQuestionRamdon() {
         var posicionDeAleatorio = Math.floor(Math.random() * questions.length);
         var preguntaAdevolver = questions[posicionDeAleatorio];
         return preguntaAdevolver;
     }
-
-    function quitarPreguntaqueyahasalido(posicion){
+  
+    function quitarPreguntaQueYaHaSalido(posicion){
         questions.splice(posicion, 1);
     }
 
@@ -108,6 +107,7 @@ var appTrivial = (function () {
         document.getElementById('listaRespuestas').innerHTML = listaContenedora;
     }
 
+   
     function cronometro() {
         if (segundos > 9) {
             document.getElementById('displayReloj').innerHTML = segundos;
@@ -115,7 +115,7 @@ var appTrivial = (function () {
             document.getElementById('displayReloj').innerHTML = '0' + segundos;
         }
         if (segundos === 20) {
-            siguientePregunta();
+            onNextQuestion();
         } else {
             clearTimeout(tiempo);
             tiempo = setTimeout(function () {
@@ -127,14 +127,13 @@ var appTrivial = (function () {
 
     function siguientePregunta() {
         if (questions.length > 0) {
-            clearTimeout(tiempo);
             preguntaObtenida = getQuestionRamdon();
-            quitarPreguntaqueyahasalido(questions.indexOf(preguntaObtenida));
+            quitarPreguntaQueYaHaSalido(questions.indexOf(preguntaObtenida));
             pintarPregunta(preguntaObtenida);
             promedio += parseInt(segundos);
             segundos = 0;
             pintarMensaje('');
-            cronometro();
+            iniciarCronometro();
         } else {
             pintarMarcador();
             document.getElementById('siguiente').style.display = 'none';
@@ -142,17 +141,23 @@ var appTrivial = (function () {
             pintarPromedio();
         }
     }
-
+    function iniciarCronometro(){
+        cronometro();
+    }
     function pintarPromedio(){
         promedio = promedio / totalQuestions;
         document.getElementsByClassName('promedio')[0].innerHTML = promedio + ' segundos';
     }
 
-    function pintarMarcador(){
-        document.getElementById('puntos').innerHTML = puntos + ' puntos';
-        document.getElementById('marcadorjugador').innerHTML = nombreJugador;
+    function guardarDatosJugador(){
+        localStorage.nombre = document.getElementById('nombrejugador').value;
+        localStorage.puntos = puntos;
     }
-
+    function pintarMarcador(){
+        document.getElementById('puntosFinales').innerHTML = localStorage.puntos + ' puntos';
+        document.getElementById('jugador').innerHTML = localStorage.nombre;
+    }
+   
     function pintarMensaje(mensaje) {
         document.getElementById('mensaje').innerHTML = mensaje;
     }
@@ -163,11 +168,6 @@ var appTrivial = (function () {
         }else{
             document.getElementById('noOk').innerHTML = ++numeroPreguntasNoOk;
         }
-    }
-
-    function guardarNombreJugador(){
-        nombreJugador = document.getElementById('nombrejugador').value;
-
     }
 
     function calcularPuntos(){
@@ -234,25 +234,22 @@ var appTrivial = (function () {
     }
 
     function onNextQuestion(){
-        calcularPuntos();
         siguientePregunta();
+        calcularPuntos();
     }
 
     function iniciar() {
         document.getElementById('iniciar').addEventListener('click', function(){
             document.getElementsByClassName('overlay')[0].style.display = 'none';
-                // var jugador = document.getElementsByClassName('nombrejugador')[0].value;
-                // document.getElementById('jugador').innerHTML = jugador;
-            // appTrivial.iniciar();
-        
+               
             getQuestions(function (data) {
                 questions = data;
                 totalQuestions = data.length;
             });
             preguntaObtenida = getQuestionRamdon();
-            quitarPreguntaqueyahasalido(questions.indexOf(preguntaObtenida));
+            quitarPreguntaQueYaHaSalido(questions.indexOf(preguntaObtenida));
             pintarPregunta(preguntaObtenida);
-            cronometro();
+            iniciarCronometro();
             document.getElementById('enviar').addEventListener('click', onCheck);
             document.getElementById('siguiente').addEventListener('click', onNextQuestion);
         });
