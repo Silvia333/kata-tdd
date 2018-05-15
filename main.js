@@ -78,18 +78,20 @@ var appTrivial = (function () {
 
         callback(serverData);
     }
-    
+
     var preguntaObtenida, 
         questions = [],
         segundos = 0, 
         nombreJugador, 
+        history,
         puntos = 0,
         miRespuestaElegida, 
         numeroPreguntasOk = 0, 
         numeroPreguntasNoOk = 0, 
         tiempo,
         promedio = 0, 
-        totalQuestions;
+        totalQuestions,
+        marcadorPuntos;
     
     function getQuestionRamdon() {
         var posicionDeAleatorio = Math.floor(Math.random() * questions.length);
@@ -166,7 +168,10 @@ var appTrivial = (function () {
            puntos: puntos
        };
        localStorage.setItem('marcadorAppTrivial', JSON.stringify(marcador));
-       //localStorage.getItem('marcadorAppTrivial', JSON.parse(marcador));
+    }
+
+    function obtenerDatosJugador(){
+        history = JSON.parse(localStorage.getItem('marcadorAppTrivial'));  
     }
 
     function pintarMensaje(mensaje) {
@@ -193,6 +198,10 @@ var appTrivial = (function () {
     }
 
     function puntosSiNoContesta() {
+        if (segundos <= 19) {
+            puntos += - 2;
+            console.log(segundos + 'menos 2');
+        }
         if (segundos >= 19) {
             puntos += - 3;
             console.log(segundos + 'menos 3');
@@ -248,6 +257,9 @@ var appTrivial = (function () {
     }
 
     function iniciar() {
+        obtenerDatosJugador();
+        puntos =  history && history.puntos;
+        document.getElementById('nombrejugador').value = history && history.nombre;
         document.getElementById('iniciar').addEventListener('click', function(){
             document.getElementsByClassName('overlay')[0].style.display = 'none';
             nombreJugador = document.getElementById('nombrejugador').value;   
