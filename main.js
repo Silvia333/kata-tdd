@@ -79,11 +79,18 @@ var appTrivial = (function () {
         callback(serverData);
     }
     
-    var preguntaObtenida, nombreJugador, questions = [],
-    segundos = 0, puntos = 0,
-    miRespuestaElegida, numeroPreguntasOk = 0, numeroPreguntasNoOk = 0, tiempo,
-    promedio = 0, totalQuestions;
-
+    var preguntaObtenida, 
+        questions = [],
+        segundos = 0, 
+        nombreJugador, 
+        puntos = 0,
+        miRespuestaElegida, 
+        numeroPreguntasOk = 0, 
+        numeroPreguntasNoOk = 0, 
+        tiempo,
+        promedio = 0, 
+        totalQuestions;
+    
     function getQuestionRamdon() {
         var posicionDeAleatorio = Math.floor(Math.random() * questions.length);
         var preguntaAdevolver = questions[posicionDeAleatorio];
@@ -100,8 +107,7 @@ var appTrivial = (function () {
         var respuestasDePreguntaObtenida = preguntaObtenida.answers;
         document.getElementById('preguntas').innerHTML = tituloDePreguntaObtenida;
         for (var i = 0; i < respuestasDePreguntaObtenida.length; i++) {
-            var estructuraRespuesta = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "'
-                + respuestasDePreguntaObtenida[i].id + '">' + respuestasDePreguntaObtenida[i].text + ' </li>';
+            var estructuraRespuesta = '<li><input id= "item-' + i + '" name = "answers" type="radio" value = "'+ respuestasDePreguntaObtenida[i].id + '">' + respuestasDePreguntaObtenida[i].text + ' </li>';
             listaContenedora += estructuraRespuesta;
         }
         document.getElementById('listaRespuestas').innerHTML = listaContenedora;
@@ -135,7 +141,8 @@ var appTrivial = (function () {
             pintarMensaje('');
             iniciarCronometro();
         } else {
-            pintarMarcador();
+            pintarPuntosMarcador();
+            guardarDatosJugador();
             document.getElementById('siguiente').style.display = 'none';
             clearTimeout(tiempo);
             pintarPromedio();
@@ -149,15 +156,19 @@ var appTrivial = (function () {
         document.getElementsByClassName('promedio')[0].innerHTML = promedio + ' segundos';
     }
 
+    function pintarPuntosMarcador(){
+        document.getElementById('puntosJugador').innerHTML = puntos + ' puntos';
+    }
+
     function guardarDatosJugador(){
-        localStorage.nombre = document.getElementById('nombrejugador').value;
-        localStorage.puntos = puntos;
+       var marcador = {
+           nombre: nombreJugador,
+           puntos: puntos
+       };
+       localStorage.setItem('marcadorAppTrivial', JSON.stringify(marcador));
+       //localStorage.getItem('marcadorAppTrivial', JSON.parse(marcador));
     }
-    function pintarMarcador(){
-        document.getElementById('puntosFinales').innerHTML = localStorage.puntos + ' puntos';
-        document.getElementById('jugador').innerHTML = localStorage.nombre;
-    }
-   
+
     function pintarMensaje(mensaje) {
         document.getElementById('mensaje').innerHTML = mensaje;
     }
@@ -172,12 +183,11 @@ var appTrivial = (function () {
 
     function calcularPuntos(){
         miRespuestaElegida = document.miformulario.answers.value;
-        var resultado;
-        if (miRespuestaElegida === '') {
+        if (miRespuestaElegida === ''){
             puntosSiNoContesta();
-        } else if (parseInt(miRespuestaElegida) === preguntaObtenida.correctAnswerId) {
+        } else if (parseInt(miRespuestaElegida) === preguntaObtenida.correctAnswerId){
             puntosSiAcierto();
-        } else if (parseInt(miRespuestaElegida) !== preguntaObtenida.correctAnswerId) {
+        } else if (parseInt(miRespuestaElegida) !== preguntaObtenida.correctAnswerId){
             puntosSiFallo();
         }
     }
@@ -217,7 +227,6 @@ var appTrivial = (function () {
 
     function actualizarUI() {
         miRespuestaElegida = document.miformulario.answers.value;
-        var resultado;
         if (miRespuestaElegida === '') {
             pintarMensaje('No has contestado');
         } else if (parseInt(miRespuestaElegida) === preguntaObtenida.correctAnswerId) {
@@ -234,14 +243,15 @@ var appTrivial = (function () {
     }
 
     function onNextQuestion(){
-        siguientePregunta();
         calcularPuntos();
+        siguientePregunta();
     }
 
     function iniciar() {
         document.getElementById('iniciar').addEventListener('click', function(){
             document.getElementsByClassName('overlay')[0].style.display = 'none';
-               
+            nombreJugador = document.getElementById('nombrejugador').value;   
+            document.getElementById('jugador').innerHTML = nombreJugador;
             getQuestions(function (data) {
                 questions = data;
                 totalQuestions = data.length;
